@@ -7,7 +7,7 @@ const bodyParser = require("body-parser"),
   config = require("./config");
 
 const mongoose = require("mongoose");
-mongoose.Promise = require("q").Promise;
+mongoose.Promise = global.Promise;
 
 RegExp.escape = (text) => {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
