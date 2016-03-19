@@ -3,17 +3,15 @@ const bodyParser = require("body-parser"),
   express = require("express"),
   join = require("path").join,
   logger = require("morgan"),
+  mongoose = require("mongoose"),
   responseTime = require("response-time"),
   config = require("./config");
-
-const mongoose = require("mongoose");
-mongoose.Promise = require("q").Promise;
 
 RegExp.escape = (text) => {
   return text.replace(/[-[\]{}()*+?.,\\^$|#\s]/g, "\\$&");
 };
 
-mongoose.connect("mongodb://" + config.dbHosts.join(",") + "/popcorn_shows", {
+mongoose.connect("mongodb://" + config.dbHosts.join(",") + "/popcorn", {
   db: {
     native_parser: true
   },

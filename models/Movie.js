@@ -1,6 +1,6 @@
 const mongoose = require("mongoose");
 
-module.exports = mongoose.model("Show", {
+module.exports = mongoose.model("Movie", {
   _id: {
     type: String,
     required: true,
@@ -9,7 +9,6 @@ module.exports = mongoose.model("Show", {
     }
   },
   imdb_id: String,
-  tvdb_id: String,
   title: String,
   year: String,
   slug: String,
@@ -17,13 +16,11 @@ module.exports = mongoose.model("Show", {
   runtime: String,
   rating: {},
   country: String,
-  network: String,
-  air_day: String,
-  air_time: String,
-  status: String,
-  num_seasons: Number,
   last_updated: Number,
   images: {},
   genres: [],
-  episodes: []
+  released: Number,
+  trailer: String,
+  certification: String,
+  torrents: {}
 });

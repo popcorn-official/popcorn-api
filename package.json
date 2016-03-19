@@ -1,7 +1,7 @@
 {
   "name": "popcorn-api",
-  "version": "1.0.2",
-  "description": "An objectivly better TV series API for Popcorn Time.",
+  "version": "1.1.0",
+  "description": "Popcorn Time API is developed to make it easier for anyone to create their own version of Popcorn Time.",
   "dependencies": {
     "async-q": "^0.3.1",
     "body-parser": "^1.15.0",
@@ -18,7 +18,7 @@
   "scripts": {
     "start": "node --harmony --harmony_destructuring --harmony_default_parameters --use_strict index.js"
   },
-  "engines": { "node" : ">=4.0.0" },
+  "engines": { "node" : ">=5.0.0" },
   "main": "index.js",
   "repository": {
     "type": "git",

@@ -2,7 +2,7 @@
 
 const app = require("express")(),
   cluster = require("cluster"),
-  CronJob = require("cron").CronJob,
+
   cpuCount = require("os").cpus().length,
   domain = require("domain"),
   fs = require("fs"),
@@ -12,27 +12,6 @@ const app = require("express")(),
 
 require("./setup.js")(config, app);
 require("./routes.js")(app);
-
-/* Initiates the cronjob. */
-const initCron = () => {
-  try {
-    const job = new CronJob({
-      cronTime: config.scrapeTime,
-      onTick: () => {
-        scraper.scrape();
-      },
-      onComplete: () => {
-        utils.setStatus("Idle");
-      },
-      start: true,
-      timeZone: "America/Los_Angeles"
-    });
-    console.log("Cron job started");
-  } catch (ex) {
-    util.onError("Cron pattern not valid");
-  }
-  scraper.scrape();
-};
 
 if (cluster.isMaster) {
   for (let i = 0; i < Math.min(cpuCount, config.workers); i++) {
@@ -50,7 +29,7 @@ if (cluster.isMaster) {
   if (config.master) {
     const scope = domain.create();
     scope.run(() => {
-      initCron();
+      util.initCron(config.scrapeTime, scraper.scrape(), util.setStatus("Idle"));
     });
     scope.on("error", (err) => {
       util.onError(err);

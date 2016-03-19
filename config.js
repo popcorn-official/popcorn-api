@@ -105,7 +105,7 @@ const config = {
     "the-office": "the-office-us",
     "vikings-us": "vikings"
   },
-  providers: [{
+  showProviders: [{
     name: "ZonerLOL",
     query: {
       query: "x264-LOL",
@@ -118,14 +118,14 @@ const config = {
       uploader: "SRIGGA",
       min_seeds: 1
     }
-  },{
+  }, {
     name: "EZTV",
     query: {
       query: "x264",
       uploader: "eztv",
       min_seeds: 1
     }
-  },{
+  }, {
     name: "Zonerw4f",
     query: {
       query: "x264 w4f",
@@ -256,6 +256,13 @@ const config = {
     name: "VTV",
     query: {
       uploader: "VTV"
+    }
+  }],
+  movieProviders: [{
+    name: "Megaradon",
+    query: {
+      query: "720p",
+      uploader: "megaradon"
     }
   }]
 };

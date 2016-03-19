@@ -1,7 +1,7 @@
 const async = require("async-q"),
-  Show = require("../models/Show"),
-  trakt = require("../lib/trakt"),
-  util = require("../util");
+  Show = require("../../models/Show"),
+  trakt = require("../../lib/trakt"),
+  util = require("../../util");
 let name;
 
 /* Update a given show (doc) with it's associated episodes. */
@@ -45,34 +45,34 @@ const updateEpisodes = function*(doc) {
     return saved.save();
   } else {
     console.log(name + ": '" + doc.title + "' is a new show!");
-    return yield new Show(doc).save();
+    return new Show(doc).save();
   }
 };
 
 /* Adds one season to a show. */
-const addSeason = function*(doc, episodes, season_no, slug) {
-  season_no = parseInt(season_no);
-  if (!isNaN(season_no)) {
-    const season = yield trakt.getSeason(slug, season_no)
-    for (let episode_data in season) {
-      episode_data = season[episode_data];
-      if (typeof(episodes[season_no]) !== "undefined" && typeof(episodes[season_no][episode_data.number]) !== "undefined") {
+const addSeason = function*(doc, episodes, seasonNumber, slug) {
+  seasonNumber = parseInt(seasonNumber);
+  if (!isNaN(seasonNumber)) {
+    const season = yield trakt.getSeason(slug, seasonNumber)
+    for (let episodeData in season) {
+      episodeData = season[episodeData];
+      if (typeof(episodes[seasonNumber]) !== "undefined" && typeof(episodes[seasonNumber][episodeData.number]) !== "undefined") {
         const episode = {
-          tvdb_id: episode_data.ids["tvdb"],
-          season: episode_data.season,
-          episode: episode_data.number,
-          title: episode_data.title,
-          overview: episode_data.overview,
+          tvdb_id: episodeData.ids["tvdb"],
+          season: episodeData.season,
+          episode: episodeData.number,
+          title: episodeData.title,
+          overview: episodeData.overview,
           date_based: false,
-          first_aired: new Date(episode_data.first_aired).getTime() / 1000.0,
+          first_aired: new Date(episodeData.first_aired).getTime() / 1000.0,
           watched: {
             watched: false
           },
           torrents: []
         };
 
-        episode.torrents = episodes[season_no][episode_data.number];
-        episode.torrents[0] = episodes[season_no][episode_data.number]["480p"] ? episodes[season_no][episode_data.number]["480p"] : episodes[season_no][episode_data.number]["720p"]; // Prevents breaking the app
+        episode.torrents = episodes[seasonNumber][episodeData.number];
+        episode.torrents[0] = episodes[seasonNumber][episodeData.number]["480p"] ? episodes[seasonNumber][episodeData.number]["480p"] : episodes[seasonNumber][episodeData.number]["720p"]; // Prevents breaking the app
         doc.episodes.push(episode);
       }
     }
