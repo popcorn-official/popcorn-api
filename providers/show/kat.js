@@ -1,13 +1,13 @@
 const async = require("async-q"),
-  config = require("../config"),
-  kat = require("../lib/kat"),
-  util = require("../util");
+  config = require("../../config"),
+  kat = require("../../lib/kat"),
+  util = require("../../util");
 let helper, name;
 
 /* Get all the shows competable with Popcorn Time. */
 const getShow = function*(katShow) {
   const newShow = yield util.spawn(helper.getTraktInfo(katShow.slug));
-  if (typeof(newShow) != "undefined" && newShow._id && !katShow.dateBased) {
+  if (typeof(newShow) != "undefined" && newShow._id) {
     const slug = katShow.slug;
 
     delete katShow.showTitle;
@@ -64,7 +64,6 @@ const extractShow = (torrent, regex, dateBased) => {
 /* Get show info from a given torrent. */
 const getShowData = (torrent) => {
   const seasonBased = /(.*).[sS](\d{2})[eE](\d{2})/;
-  //const vtv = /(.*)\s(\d{1,2})[x](\d{2})/;
   const vtv = /(.*).(\d{1,2})[x](\d{2})/;
   const dateBased = /(.*).(\d{4}).(\d{2}.\d{2})/;
   if (torrent.title.match(seasonBased)) {

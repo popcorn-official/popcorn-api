@@ -1,4 +1,5 @@
-const fs = require("fs"),
+const CronJob = require("cron").CronJob,
+  fs = require("fs"),
   config = require("./config");
 
 /* Makes the temporary directory. */
@@ -33,7 +34,10 @@ module.exports = {
     }), (err) => {});
   },
 
-  /* Function for resolving generators. */
+  /*
+   * Function for resolving generators.
+   * Method from: https://www.youtube.com/watch?v=lil4YCCXRYc
+   */
   spawn: (generator) => {
     return new Promise((resolve, reject) => {
       let onResult = (lastPromiseResult) => {
@@ -63,6 +67,27 @@ module.exports = {
       }
     });
     makeTemp();
+  },
+
+  /* Initiates the cronjob. */
+  initCron: (cronTime, job, doneFunction) => {
+    try {
+      const job = new CronJob({
+        cronTime: cronTime,
+        onTick: () => {
+          job;
+        },
+        onComplete: () => {
+          doneFunction;
+        },
+        start: true,
+        timeZone: "America/Los_Angeles"
+      });
+      console.log("Cron job started");
+    } catch (ex) {
+      util.onError("Cron pattern not valid");
+    }
+    job;
   }
 
 };
