@@ -62,7 +62,7 @@ Documentation for the code can be generated with the command `npm run docs`. Thi
 
 Know issues are indicated in the code with the `TODO` tag.
 
-- Sorting shows by updated can go over the 32MB limit set by MongoDB. More info here: #25
+- No known issues :)
 
 # Providers
 

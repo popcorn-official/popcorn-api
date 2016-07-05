@@ -97,9 +97,6 @@ const Shows = () => {
         }
 
         query.title = { $regex: new RegExp(`${regex}.*`), $options: "gi" };
-        query.num_seasons = {
-          $gt: 0
-        };
       }
 
       if (data.sort) {
@@ -114,7 +111,7 @@ const Shows = () => {
           "rating.watching": parseInt(data.order, 10)
         };
         if (data.sort === "updated") sort = {
-          "episodes.first_aired": parseInt(data.order, 10)
+          "latest_episode": parseInt(data.order, 10)
         };
         if (data.sort === "year") sort = {
           "year": parseInt(data.order, 10)
@@ -126,34 +123,19 @@ const Shows = () => {
         query.genres = data.genre.toLowerCase();
       }
 
-      query.num_seasons = {
-        $gt: 0
-      };
-
-      // TODO: Do updated also with 'aggregate'.
-      if (data.sort === "updated") {
-        return Show.find(query, projection)
-          .sort(sort)
-          .skip(offset)
-          .limit(global.pageSize)
-          .exec()
+      return Show.aggregate([{
+          $sort: sort
+        }, {
+          $match: query
+        }, {
+          $project: projection
+        }, {
+          $skip: offset
+        }, {
+          $limit: global.pageSize
+        }]).exec()
           .then(docs => res.json(docs))
           .catch(err => res.json(err));
-      } else {
-        return Show.aggregate([{
-            $sort: sort
-          }, {
-            $match: query
-          }, {
-            $project: projection
-          }, {
-            $skip: offset
-          }, {
-            $limit: global.pageSize
-          }]).exec()
-          .then(docs => res.json(docs))
-          .catch(err => res.json(err));
-      }
     }
   };
 

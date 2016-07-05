@@ -149,6 +149,8 @@ const Helper = name => {
               torrents: {}
             };
 
+            if (episode.first_aired > show.latest_episode) show.latest_episode = episode.first_aired;
+
             episode.torrents = episodes[seasonNumber][episodeData.number];
             episode.torrents[0] = episodes[seasonNumber][episodeData.number]["480p"] ? episodes[seasonNumber][episodeData.number]["480p"] : episodes[seasonNumber][episodeData.number]["720p"];
             show.episodes.push(episode);
@@ -199,6 +201,7 @@ const Helper = name => {
           status: traktShow.status,
           num_seasons: 0,
           last_updated: Number(new Date()),
+          latest_episode: 0,
           images: {
             banner: traktShow.images.banner.full !== null ? traktShow.images.banner.full : "images/posterholder.png",
             fanart: traktShow.images.fanart.full !== null ? traktShow.images.fanart.full : "images/posterholder.png",
