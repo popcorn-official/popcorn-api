@@ -1,48 +1,48 @@
 // Import the neccesary modules.
 import { global } from "../config/constants";
-import Show from "../models/Show";
+import Anime from "../models/Anime";
 
 /**
  * @class
- * @classdesc The factory function for getting show data from the MongoDB.
- * @memberof module:controllers/shows
- * @property {Object} projection - Object used for the projection of shows.
+ * @classdesc The factory function for getting anime data from the MongoDB.
+ * @memberof module:controllers/animes
  */
-export default class Shows {
+export default class Animes {
 
   constructor() {
-    Shows.projection = {
-      _id: 1,
-      imdb_id: 1,
+    Animes.projection = {
+      images: 1,
+      mal_id: 1,
+      haru_id: 1,
       tvdb_id: 1,
+      imdb_id: 1,
+      slug: 1,
       title: 1,
       year: 1,
-      images: 1,
-      slug: 1,
-      num_seasons: 1,
+      type: 1,
+      item_data: 1,
       rating: 1
     };
   };
 
   /**
    * @description Get all the pages.
-   * @function Shows#getShows
-   * @memberof module:controllers/shows
+   * @function Animes#getAnimes
+   * @memberof module:controllers/animes
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
    * @returns {Array} - A list of pages which are available.
    */
-  getShows(req, res) {
-    return Show.count({
-      num_seasons: {
+  getAnimes(req, res) {
+    return Anime.count({
+      num_episodes: {
         $gt: 0
       }
     }).exec().then(count => {
       const pages = Math.round(count / global.pageSize);
       const docs = [];
 
-      for (let i = 1; i < pages + 1; i++)
-        docs.push(`shows/${i}`);
+      for (let i = 1; i < pages + 1; i++) docs.push(`anime/${i}`);
 
       return res.json(docs);
     }).catch(err => res.json(err));
@@ -50,8 +50,8 @@ export default class Shows {
 
   /**
    * @description Get one page.
-   * @function Shows#getPage
-   * @memberof module:controllers/shows
+   * @function Animes#getPage
+   * @memberof module:controllers/animes
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
    * @returns {Array} - The contents of one page.
@@ -61,14 +61,14 @@ export default class Shows {
     const offset = page * global.pageSize;
 
     if (req.params.page === "all") {
-      return Show.aggregate([{
+      return Anime.aggregate([{
           $match: {
-            num_seasons: {
+            num_episodes: {
               $gt: 0
             }
           }
         }, {
-          $project: Shows.projection
+          $project: Animes.projection
         }, {
           $sort: {
             title: -1
@@ -78,7 +78,7 @@ export default class Shows {
         .catch(err => res.json(err));
     } else {
       let query = {};
-      query.num_seasons = {
+      query.num_episodes = {
         $gt: 0
       };
       const data = req.query;
@@ -109,12 +109,12 @@ export default class Shows {
           "rating.percentage": parseInt(data.order, 10),
           "rating.votes": parseInt(data.order, 10)
         };
-        if (data.sort === "trending") sort = {
-          "rating.watching": parseInt(data.order, 10)
-        };
-        if (data.sort === "updated") sort = {
-          "latest_episode": parseInt(data.order, 10)
-        };
+        // if (data.sort === "trending") sort = {
+        //   "rating.watching": parseInt(data.order, 10)
+        // };
+        // if (data.sort === "updated") sort = {
+        //   "latest_episode": parseInt(data.order, 10)
+        // };
         if (data.sort === "year") sort = {
           "year": parseInt(data.order, 10)
         };
@@ -125,12 +125,12 @@ export default class Shows {
         query.genres = data.genre.toLowerCase();
       }
 
-      return Show.aggregate([{
+      return Anime.aggregate([{
           $sort: sort
         }, {
           $match: query
         }, {
-          $project: Shows.projection
+          $project: Animes.projection
         }, {
           $skip: offset
         }, {
@@ -142,15 +142,15 @@ export default class Shows {
   };
 
   /**
-   * @description Get info from one show.
-   * @function Shows#getShow
-   * @memberof module:controllers/shows
+   * @description Get info from one anime.
+   * @function Animes#getAnime
+   * @memberof module:controllers/animes
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
-   * @returns {Show} - The details of a single show.
+   * @returns {Anime} - The details of a single anime.
    */
-  getShow(req, res) {
-    return Show.findOne({
+  getAnime(req, res) {
+    return Anime.findOne({
       _id: req.params.id
     }, {latest_episode: 0}).exec()
     .then(docs => res.json(docs))
@@ -158,16 +158,16 @@ export default class Shows {
   };
 
   /**
-   * @description Get a random show.
-   * @function Movies#getRandomShow
-   * @memberof module:controllers/shows
+   * @description Get a random anime.
+   * @function Movies#getRandomAnime
+   * @memberof module:controllers/anime
    * @param {Request} req - The express request object.
    * @param {Response} res - The express response object.
-   * @returns {Show} - A random show.
+   * @returns {Anime} - A random movie.
    */
-  getRandomShow(req, res) {
-    return Show.aggregate([{
-        $project: Shows.projection
+  getRandomAnime(req, res) {
+    return Anime.aggregate([{
+        $project: Animes.projection
       }, {
         $sample: {
           size: 1

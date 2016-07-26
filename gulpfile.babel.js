@@ -7,11 +7,7 @@ import babel from "gulp-babel";
  * @description The default build function.
  * @returns {Gulp} - The transpiled source code.
  */
-const build = () => {
-  return gulp.src("src/**/*.js")
-    .pipe(babel())
-    .pipe(gulp.dest("build"));
-};
+const build = () => gulp.src("src/**/*.js").pipe(babel()).pipe(gulp.dest("build"));
 
 // Delete the `build` directory.
 gulp.task("clean", () => del(["build"]));

@@ -1,5 +1,5 @@
 // Import the neccesary modules.
-import { global } from "../config/global";
+import { global } from "../config/constants";
 import Movie from "../models/Movie";
 
 /**
@@ -8,22 +8,24 @@ import Movie from "../models/Movie";
  * @memberof module:controllers/movies
  * @property {Object} projection - Object used for the projection of movies.
  */
-const Movies = () => {
+export default class Movies {
 
-  const projection = {
-    _id: 1,
-    imdb_id: 1,
-    title: 1,
-    year: 1,
-    runtime: 1,
-    images: 1,
-    genres: 1,
-    synopsis: 1,
-    trailer: 1,
-    certification: 1,
-    released: 1,
-    rating: 1,
-    torrents: 1
+  constructor() {
+    Movies.projection = {
+      _id: 1,
+      imdb_id: 1,
+      title: 1,
+      year: 1,
+      runtime: 1,
+      images: 1,
+      genres: 1,
+      synopsis: 1,
+      trailer: 1,
+      certification: 1,
+      released: 1,
+      rating: 1,
+      torrents: 1
+    };
   };
 
   /**
@@ -34,7 +36,7 @@ const Movies = () => {
    * @param {Response} res - The express response object.
    * @returns {Array} - A list of pages which are available.
    */
-  const getMovies = (req, res) => {
+  getMovies(req, res) {
     return Movie.count().exec().then(count => {
       const pages = Math.round(count / global.pageSize);
       const docs = [];
@@ -54,13 +56,13 @@ const Movies = () => {
    * @param {Response} res - The express response object.
    * @returns {Array} - The contents of one page.
    */
-  const getPage = (req, res) => {
+  getPage(req, res) {
     const page = req.params.page - 1;
     const offset = page * global.pageSize;
 
     if (req.params.page === "all") {
       return Movie.aggregate([{
-          $project: projection
+          $project: Movies.projection
         }, {
           $sort: {
             title: -1
@@ -119,7 +121,7 @@ const Movies = () => {
         }, {
           $match: query
         }, {
-          $project: projection
+          $project: Movies.projection
         }, {
           $skip: offset
         }, {
@@ -138,13 +140,13 @@ const Movies = () => {
    * @param {Response} res - The express response object.
    * @returns {Movie} - The details of a single movie.
    */
-  const getMovie = (req, res) => {
+  getMovie(req, res) {
     return Movie.aggregate([{
         $match: {
           _id: req.params.id
         }
       }, {
-        $project: projection
+        $project: Movies.projection
       }, {
         $limit: 1
       }]).exec()
@@ -160,9 +162,9 @@ const Movies = () => {
    * @param {Response} res - The express response object.
    * @returns {Movie} - A random movie.
    */
-  const getRandomMovie = (req, res) => {
+  getRandomMovie(req, res) {
     return Movie.aggregate([{
-        $project: projection
+        $project: Movies.projection
       }, {
         $sample: {
           size: 1
@@ -174,10 +176,4 @@ const Movies = () => {
       .catch(err => res.json(err));
   };
 
-  // Return the public functions.
-  return { getMovies, getPage, getMovie, getRandomMovie };
-
 };
-
-// Export the movie factory function.
-export default Movies;

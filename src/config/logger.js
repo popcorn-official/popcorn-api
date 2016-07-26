@@ -1,9 +1,10 @@
 // Import the neccesary modules.
 import expressWinston from "express-winston";
 import fs from "fs";
+import path from "path";
 import sprintf from "sprintf";
 import winston from "winston";
-import { global } from "./global";
+import { global } from "./constants";
 import packageJSON from "../../package.json";
 
 /**
@@ -14,10 +15,12 @@ import packageJSON from "../../package.json";
  * @property {Object} expressLogger - The Express Winston instance.
  * @param {Console} console - The default console object.
  */
-const Logger = console => {
+export default class Logger {
 
-  // Create the temp directory if it does not exists.
-  if (!fs.existsSync(global.tempDir)) fs.mkdirSync(global.tempDir);
+  constructor() {
+    // Create the temp directory if it does not exists.
+    if (!fs.existsSync(global.tempDir)) fs.mkdirSync(global.tempDir);
+  };
 
   /**
    * @description Check if the message is empty and replace it with the meta.
@@ -26,7 +29,7 @@ const Logger = console => {
    * @param {Object} args - Arguments passed by Winston.
    * @returns {Object} - Formatter arguments passed by Winston.
    */
-  const checkEmptyMessage = args => {
+  static checkEmptyMessage(args) {
     if (args.message === "" && Object.keys(args.meta).length !== 0)
       args.message = JSON.stringify(args.meta);
 
@@ -40,7 +43,7 @@ const Logger = console => {
    * @param {Object} args - Arguments passed by Winston.
    * @returns {String} - The formatted message.
    */
-  const consoleFormatter = args => {
+  consoleFormatter(args) {
     let levelColor = "";
     switch (args.level) {
     case "error":
@@ -60,7 +63,7 @@ const Logger = console => {
       break;
     }
 
-    args = checkEmptyMessage(args);
+    args = Logger.checkEmptyMessage(args);
     return sprintf(`\x1b[0m[%s] ${levelColor}%5s:\x1b[0m %2s/%d: \x1b[36m%s\x1b[0m`,
       new Date().toISOString(), args.level.toUpperCase(), packageJSON.name,
       process.pid, args.message);
@@ -73,8 +76,8 @@ const Logger = console => {
    * @param {Object} args - Arguments passed by Winston.
    * @returns {String} - The formatted message.
    */
-  const fileFormatter = args => {
-    args = checkEmptyMessage(args);
+  fileFormatter(args) {
+    args = Logger.checkEmptyMessage(args);
     return JSON.stringify({
       name: packageJSON.name,
       pid: process.pid,
@@ -84,49 +87,49 @@ const Logger = console => {
     });
   };
 
-  const logger = new winston.Logger({
-    transports: [
-      new winston.transports.Console({
-        name: packageJSON.name,
-        formatter: consoleFormatter,
-        handleExceptions: true,
-        prettyPrint: true
-      }),
-      new winston.transports.File({
-        filename: `${global.tempDir}/${packageJSON.name}.log`,
-        level: "warn",
-        json: false,
-        formatter: fileFormatter,
-        maxsize: 5242880,
-        handleExceptions: true
-      })
-    ],
-    exitOnError: false
-  });
+  getLogger() {
+    return new winston.Logger({
+      transports: [
+        new winston.transports.Console({
+          name: packageJSON.name,
+          formatter: this.consoleFormatter,
+          handleExceptions: true,
+          prettyPrint: true
+        }),
+        new winston.transports.File({
+          filename: path.join(global.tempDir, `${packageJSON.name}.log`),
+          level: "warn",
+          json: false,
+          formatter: this.fileFormatter,
+          maxsize: 5242880,
+          handleExceptions: true
+        })
+      ],
+      exitOnError: false
+    });
+  };
 
-  const expressLogger = new expressWinston.logger({winstonInstance: logger, expressFormat: true});
+  getExpressLogger() {
+    return new expressWinston.logger({winstonInstance: this.getLogger(), expressFormat: true});
+  };
 
-  // Override the console functions.
-  console.log = msg => logger.info(msg);
-  console.error = msg => logger.error(msg);
-  console.warn = msg => logger.warn(msg);
-  console.info = msg => logger.info(msg);
-  console.debug = msg => logger.debug(msg);
+  overrideConsole(logger) {
+    // Override the console functions.
+    console.log = msg => logger.info(msg);
+    console.error = msg => logger.error(msg);
+    console.warn = msg => logger.warn(msg);
+    console.info = msg => logger.info(msg);
+    console.debug = msg => logger.debug(msg);
+  };
 
   /**
    * @description Reset the default log file.
    * @function Logger#reset
    * @memberof module:config/logger
    */
-  const reset = () => {
-    if (fs.existsSync(`${global.tempDir}/${packageJSON.name}.log`))
-      fs.unlinkSync(`${global.tempDir}/${packageJSON.name}.log`);
+  reset() {
+    const logFile = path.join(global.tempDir, `${packageJSON.name}.log`);
+    if (fs.existsSync(logFile)) fs.unlinkSync(logFile);
   };
 
-  // Return the public functions.
-  return { expressLogger, logger, reset };
-
 };
-
-// Export the Routes factory function.
-export default Logger;

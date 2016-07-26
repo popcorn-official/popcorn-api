@@ -11,10 +11,14 @@ import Util from "../../util";
  * @property {Object} util - The util object with general functions.
  * @property {Object} trakt - A configured trakt api.
  */
-const Helper = name => {
+export default class Helper {
 
-  const util = Util();
-  const trakt = util.trakt;
+  constructor(name) {
+    this.name = name;
+
+    this.util = new Util();
+    this.trakt = this.util.trakt;
+  };
 
   /**
    * @description Update the number of seasons of a given show
@@ -23,7 +27,7 @@ const Helper = name => {
    * @param {Show} show - The show to update the number of seasons.
    * @returns {Show} - A newly updated show.
    */
-  const updateNumSeasons = async show => {
+  async updateNumSeasons(show) {
     const saved = await Show.findOneAndUpdate({
       _id: show._id
     }, show, {
@@ -51,7 +55,7 @@ const Helper = name => {
    * @param {Show} show - The show to merge the episodes to.
    * @param {String} quality - The quality of the torrent.
    */
-  const updateEpisode = (matching, found, show, quality) => {
+  updateEpisode(matching, found, show, quality) {
     let index = show.episodes.indexOf(matching);
 
     if (found.torrents[quality] && matching.torrents[quality]) {
@@ -85,35 +89,36 @@ const Helper = name => {
    * @param {Show} show - The show to update its episodes.
    * @returns {Show} - A newly updated show.
    */
-  const updateEpisodes = async show => {
+  async updateEpisodes(show) {
     try {
+
       const found = await Show.findOne({
           _id: show._id
         }).exec();
       if (found) {
-        console.log(`${name}: '${found.title}' is an existing show.`);
+        console.log(`${this.name}: '${found.title}' is an existing show.`);
         for (let i = 0; i < found.episodes.length; i++) {
           let matching = show.episodes
             .filter(showEpisode => showEpisode.season === found.episodes[i].season)
             .filter(showEpisode => showEpisode.episode === found.episodes[i].episode);
 
           if (matching.length != 0) {
-            show = updateEpisode(matching[0], found.episodes[i], show, "480p");
-            show = updateEpisode(matching[0], found.episodes[i], show, "720p");
-            show = updateEpisode(matching[0], found.episodes[i], show, "1080p");
+            show = this.updateEpisode(matching[0], found.episodes[i], show, "480p");
+            show = this.updateEpisode(matching[0], found.episodes[i], show, "720p");
+            show = this.updateEpisode(matching[0], found.episodes[i], show, "1080p");
           } else {
             show.episodes.push(found.episodes[i]);
           }
         }
 
-        return await updateNumSeasons(show);
+        return await this.updateNumSeasons(show);
       } else {
-        console.log(`${name}: '${show.title}' is a new show!`);
+        console.log(`${this.name}: '${show.title}' is a new show!`);
         const newShow = await new Show(show).save();
-        return await updateNumSeasons(newShow);
+        return await this.updateNumSeasons(newShow);
       }
     } catch (err) {
-      return util.onError(err);
+      return this.util.onError(err);
     }
   };
 
@@ -127,11 +132,11 @@ const Helper = name => {
    * @param {String} slug - The slug of the show.
    * @returns {Show} - A new show with seasons.
    */
-  const addSeason = async(show, episodes, seasonNumber, slug) => {
+  async addSeason(show, episodes, seasonNumber, slug) {
     try {
       seasonNumber = parseInt(seasonNumber);
       if (!isNaN(seasonNumber) && seasonNumber.toString().length <= 2) {
-        const season = await trakt.seasons.season({id: slug, season: seasonNumber, extended: "full"});
+        const season = await this.trakt.seasons.season({id: slug, season: seasonNumber, extended: "full"});
         for (let episodeData in season) {
           episodeData = season[episodeData];
           if (episodes[seasonNumber] && episodes[seasonNumber][episodeData.number]) {
@@ -149,6 +154,8 @@ const Helper = name => {
               torrents: {}
             };
 
+            if (episode.first_aired > show.latest_episode) show.latest_episode = episode.first_aired;
+
             episode.torrents = episodes[seasonNumber][episodeData.number];
             episode.torrents[0] = episodes[seasonNumber][episodeData.number]["480p"] ? episodes[seasonNumber][episodeData.number]["480p"] : episodes[seasonNumber][episodeData.number]["720p"];
             show.episodes.push(episode);
@@ -156,7 +163,7 @@ const Helper = name => {
         }
       }
     } catch (err) {
-      return util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return this.util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   };
 
@@ -167,10 +174,10 @@ const Helper = name => {
    * @param {String} slug - The slug to query trakt.tv.
    * @returns {Show} - A new show without the episodes attached.
    */
-  const getTraktInfo = async slug => {
+  async getTraktInfo(slug) {
     try {
-      const traktShow = await trakt.shows.summary({id: slug, extended: "full,images"});
-      const traktWatchers = await trakt.shows.watching({id: slug});
+      const traktShow = await this.trakt.shows.summary({id: slug, extended: "full,images"});
+      const traktWatchers = await this.trakt.shows.watching({id: slug});
 
       let watching = 0;
       if (traktWatchers !== null) watching = traktWatchers.length;
@@ -199,6 +206,7 @@ const Helper = name => {
           status: traktShow.status,
           num_seasons: 0,
           last_updated: Number(new Date()),
+          latest_episode: 0,
           images: {
             banner: traktShow.images.banner.full !== null ? traktShow.images.banner.full : "images/posterholder.png",
             fanart: traktShow.images.fanart.full !== null ? traktShow.images.fanart.full : "images/posterholder.png",
@@ -209,7 +217,7 @@ const Helper = name => {
         };
       }
     } catch (err) {
-      return util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
+      return this.util.onError(`Trakt: Could not find any data on: ${err.path || err} with slug: '${slug}'`);
     }
   };
 
@@ -222,19 +230,13 @@ const Helper = name => {
    * @param {String} slug - The slug of the show.
    * @returns {Show} - A show with updated torrents.
    */
-  const addEpisodes = async(show, episodes, slug) => {
+  async addEpisodes(show, episodes, slug) {
     try {
-      await asyncq.each(Object.keys(episodes), seasonNumber => addSeason(show, episodes, seasonNumber, slug));
-      return await updateEpisodes(show);
+      await asyncq.each(Object.keys(episodes), seasonNumber => this.addSeason(show, episodes, seasonNumber, slug));
+      return await this.updateEpisodes(show);
     } catch (err) {
-      return util.onError(err);
+      return this.util.onError(err);
     }
   };
 
-  // Return the public functions.
-  return { addEpisodes, getTraktInfo };
-
 };
-
-// Export the helper factory function.
-export default Helper;

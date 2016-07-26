@@ -4,4 +4,4 @@
 import CLI from "./cli";
 
 // Run the CLI program.
-CLI().run();
+new CLI().run();

@@ -15,7 +15,7 @@ Popcorn API is developed to make it easier for anyone to create their own versio
 # Installation
 
 1. Install MongoDB.
-2. Install NodeJS (at least Node v5.0.0 or greater).
+2. Install NodeJS (at least Node v6.3.0 or greater).
 3. Clone the repository with: `git clone https://github.com/popcorn-official/popcorn-api.git`.
 4. Install `gulp` globally with `[sudo] npm install -g gulp`.
 5. Install dependencies of Popcorn API with `cd popcorn-api` and `npm install`.
@@ -62,7 +62,7 @@ Documentation for the code can be generated with the command `npm run docs`. Thi
 
 Know issues are indicated in the code with the `TODO` tag.
 
-- Sorting shows by updated can go over the 32MB limit set by MongoDB. More info here: #25
+- No known issues :)
 
 # Providers
 

@@ -1,7 +1,9 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
-import { movieProviders, showProviders } from "./config/providers";
+import { animeProviders, movieProviders, showProviders } from "./config/constants";
 import EZTV from "./providers/show/eztv";
+import HorribleSubs from "./providers/anime/horriblesubs";
+import katAnime from "./providers/anime/kat";
 import katMovie from "./providers/movie/kat";
 import katShow from "./providers/show/kat";
 import Util from "./util";
@@ -13,9 +15,11 @@ import YTS from "./providers/movie/yts";
  * @memberof module:global/scraper
  * @property {Object} util - The util object with general functions.
  */
-const Scraper = () => {
+export default class Scraper {
 
-  const util = Util();
+  constructor() {
+    Scraper.util = new Util();
+  };
 
   /**
    * @description Start scraping from EZTV.
@@ -23,15 +27,15 @@ const Scraper = () => {
    * @memberof module:global/scraper
    * @returns {Array} A list of all the scraped shows.
    */
-  const scrapeEZTVShows = async() => {
+  async scrapeEZTVShows() {
     try {
-      const eztv = EZTV("EZTV");
-      util.setStatus(`Scraping ${eztv.name}`);
+      const eztv = new EZTV("EZTV");
+      Scraper.util.setStatus(`Scraping ${eztv.name}`);
       const eztvShows = await eztv.search();
-      console.log(`EZTV: Done.`);
+      console.log(`${eztv.name}: Done.`);
       return eztvShows;
     } catch (err) {
-      return util.onError(err);
+      return Scraper.util.onError(err);
     }
   };
 
@@ -41,16 +45,16 @@ const Scraper = () => {
    * @memberof module:global/scraper
    * @returns {Array} A list of all the scraped movies.
    */
-  const scrapeKATMovies = () => {
+  scrapeKATMovies() {
     return asyncq.eachSeries(movieProviders, async provider => {
       try {
-        util.setStatus(`Scraping ${provider.name}`);
-        const katProvider = katMovie(provider.name);
+        Scraper.util.setStatus(`Scraping ${provider.name}`);
+        const katProvider = new katMovie(provider.name);
         const katShows = await katProvider.search(provider);
         console.log(`${provider.name}: Done.`);
         return katShows;
       } catch (err) {
-        return util.onError(err);
+        return Scraper.util.onError(err);
       }
     });
   };
@@ -61,16 +65,16 @@ const Scraper = () => {
    * @memberof module:global/scraper
    * @returns {Array} A list of all the scraped shows.
    */
-  const scrapeKATShows = () => {
+  scrapeKATShows() {
     return asyncq.eachSeries(showProviders, async provider => {
       try {
-        util.setStatus(`Scraping ${provider.name}`);
-        const katProvider = katShow(provider.name);
+        Scraper.util.setStatus(`Scraping ${provider.name}`);
+        const katProvider = new katShow(provider.name);
         const katShows = await katProvider.search(provider);
         console.log(`${provider.name}: Done.`);
         return katShows;
       } catch (err) {
-        return util.onError(err);
+        return Scraper.util.onError(err);
       }
     });
   };
@@ -81,36 +85,74 @@ const Scraper = () => {
    * @memberof module:global/scraper
    * @returns {Array} A list of all the scraped movies.
    */
-  const scrapeYTSMovies = async() => {
+  async scrapeYTSMovies() {
     try {
-      const yts = YTS("YTS");
-      util.setStatus(`Scraping ${yts.name}`);
+      const yts = new YTS("YTS");
+      Scraper.util.setStatus(`Scraping ${yts.name}`);
       const ytsMovies = await yts.search();
-      console.log("YTS Done.");
+      console.log(`${yts.name}: Done.`);
       return ytsMovies;
     } catch (err) {
-      return util.onError(err);
+      return Scraper.util.onError(err);
     }
   };
+
+  /**
+   * @description Start scraping from HorribleSubs.
+   * @function Scraper#scrapeHorribelSubsAnime
+   * @memberof module:global/scraper
+   * @returns {Array} A list of all the scraped anime.
+   */
+  async scrapeHorribelSubsAnime() {
+    try {
+      const horribleSubs = new HorribleSubs("HorribleSubs");
+      Scraper.util.setStatus(`Scraping ${horribleSubs.name}`);
+      const horribleSubsAnime = await horribleSubs.search();
+      console.log(`${horribleSubs.name}: Done.`);
+      return horribleSubsAnime;
+    } catch (err) {
+      return Scraper.util.onError(err);
+    }
+  };
+
+  /**
+   * @description Start scraping from KAT.
+   * @function Scraper#scrapeKATAnime
+   * @memberof module:global/scraper
+   * @returns {Array} A list of all the scraped anime.
+   */
+  async scrapeKATAnime() {
+    return asyncq.eachSeries(animeProviders, async provider => {
+      try {
+        Scraper.util.setStatus(`Scraping ${provider.name}`);
+        const katProvider = new katAnime(provider.name);
+        const katAnimes = await katProvider.search(provider);
+        console.log(`${provider.name}: Done.`);
+        return katAnimes;
+      } catch (err) {
+        return Scraper.util.onError(err);
+      }
+    });
+  }
 
   /**
    * @description Initiate the scraping for EZTV and KAT.
    * @function Scraper#scrape
    * @memberof module:global/scraper
    */
-  const scrape = () => {
-    util.setLastUpdated();
+  scrape() {
+    Scraper.util.setLastUpdated();
 
-    asyncq.eachSeries([scrapeEZTVShows, scrapeKATShows, scrapeYTSMovies, scrapeKATMovies],
-        scraper => scraper())
-      .then(value => util.setStatus())
-      .catch(err => util.onError(`Error while scraping: ${err}`));
+    asyncq.eachSeries([
+      this.scrapeEZTVShows,
+      // this.scrapeKATShows,
+      this.scrapeYTSMovies,
+      // this.scrapeKATMovies,
+      this.scrapeHorribelSubsAnime,
+      // this.scrapeKATAnime
+    ], scraper => scraper())
+      .then(value => Scraper.util.setStatus())
+      .catch(err => Scraper.util.onError(`Error while scraping: ${err}`));
   };
 
-  // Return the public functions.
-  return { scrape };
-
 };
-
-// Export the scraper factory function.
-export default Scraper;

@@ -1,9 +1,8 @@
 // Import the neccesary modules.
 import asyncq from "async-q";
 import katApi from "kat-api-pt";
-import { global } from "../../config/global";
+import { global, katShowMap } from "../../config/constants";
 import Helper from "./helper";
-import { katMap } from "../../config/kat";
 import Util from "../../util";
 
 /**
@@ -15,11 +14,15 @@ import Util from "../../util";
  * @property {Object} kat - Configured {@link https://kat.cr/} scraper.
  * @property {Object} util - The util object with general functions.
  */
-const KAT = name => {
+export default class KAT {
 
-  const helper = Helper(name);
-  const kat = new katApi();
-  const util = Util();
+  constructor(name) {
+    this.name = name;
+
+    this.helper = new Helper(this.name);
+    this.kat = new katApi();
+    this.util = new Util();
+  };
 
   /**
    * @description Get all the shows.
@@ -28,9 +31,9 @@ const KAT = name => {
    * @param {Object} katShow - The show information.
    * @returns {Show} - A show.
    */
-  const getShow = async katShow => {
+  async getShow(katShow) {
     try {
-      const newShow = await helper.getTraktInfo(katShow.slug);
+      const newShow = await this.helper.getTraktInfo(katShow.slug);
       if (newShow && newShow._id) {
         const slug = katShow.slug;
 
@@ -42,10 +45,10 @@ const KAT = name => {
         delete katShow.quality;
         delete katShow.dateBased;
         delete katShow[0];
-        return await helper.addEpisodes(newShow, katShow, slug);
+        return await this.helper.addEpisodes(newShow, katShow, slug);
       }
     } catch (err) {
-      return util.onError(err);
+      return this.util.onError(err);
     }
   };
 
@@ -58,12 +61,12 @@ const KAT = name => {
    * @param {Boolean} dateBased - Check for dateBased episodes.
    * @returns {Object} - Information about a show from the torrent.
    */
-  const extractShow = (torrent, regex, dateBased) => {
+  extractShow(torrent, regex, dateBased) {
     let showTitle = torrent.title.match(regex)[1];
     if (showTitle.endsWith(" ")) showTitle = showTitle.substring(0, showTitle.length - 1);
     showTitle = showTitle.replace(/\./g, " ");
     let slug = showTitle.replace(/\s+/g, "-").toLowerCase();
-    slug = slug in katMap ? katMap[slug] : slug;
+    slug = slug in katShowMap ? katShowMap[slug] : slug;
     let season = torrent.title.match(regex)[2];
     let episode = torrent.title.match(regex)[3];
     if (!dateBased) {
@@ -76,7 +79,7 @@ const KAT = name => {
       url: torrent.magnet,
       seeds: torrent.seeds,
       peers: torrent.peers,
-      provider: name
+      provider: this.name
     };
 
     const show = { showTitle, slug, torrentLink: torrent.link, season, episode, quality, dateBased };
@@ -97,18 +100,18 @@ const KAT = name => {
    * from.
    * @returns {Object} - Information about a show from the torrent.
    */
-  const getShowData = torrent => {
+  getShowData(torrent) {
     const seasonBased = /(.*).[sS](\d{2})[eE](\d{2})/;
     const vtv = /(.*).(\d{1,2})[x](\d{2})/;
     const dateBased = /(.*).(\d{4}).(\d{2}.\d{2})/;
     if (torrent.title.match(seasonBased)) {
-      return extractShow(torrent, seasonBased, false);
+      return this.extractShow(torrent, seasonBased, false);
     } else if (torrent.title.match(vtv)) {
-      return extractShow(torrent, vtv, false);
+      return this.extractShow(torrent, vtv, false);
     } else if (torrent.title.match(dateBased)) {
-      return extractShow(torrent, dateBased, true);
+      return this.extractShow(torrent, dateBased, true);
     } else {
-      console.warn(`${name}: Could not find data from torrent: '${torrent.title}'`);
+      console.warn(`${this.name}: Could not find data from torrent: '${torrent.title}'`);
     }
   };
 
@@ -121,13 +124,13 @@ const KAT = name => {
    * @returns {Array} - A list of objects with show information extracted
    * from the torrents.
    */
-  const getAllKATShows = async torrents => {
+  async getAllKATShows(torrents) {
     try {
       const shows = [];
 
       await asyncq.mapSeries(torrents, torrent => {
         if (torrent) {
-          const show = getShowData(torrent);
+          const show = this.getShowData(torrent);
           if (show) {
             if (shows.length != 0) {
               const { showTitle, slug, season, episode, quality } = show;
@@ -155,7 +158,7 @@ const KAT = name => {
 
       return shows;
     } catch (err) {
-      util.onError(err);
+      this.util.onError(err);
     }
   };
 
@@ -168,23 +171,23 @@ const KAT = name => {
    * {@link https://kat.cr/}.
    * @returns {Array} - A list of all the queried torrents.
    */
-  const getAllTorrents = async(totalPages, provider) => {
+  async getAllTorrents(totalPages, provider) {
     try {
       let katTorrents = [];
       await asyncq.timesSeries(totalPages, async page => {
         try {
           provider.query.page = page + 1;
-          console.log(`${name}: Starting searching kat on page ${provider.query.page} out of ${totalPages}`);
-          const result = await kat.search(provider.query);
+          console.log(`${this.name}: Starting searching KAT on page ${provider.query.page} out of ${totalPages}`);
+          const result = await this.kat.search(provider.query);
           katTorrents = katTorrents.concat(result.results);
         } catch (err) {
-          return util.onError(err);
+          return this.util.onError(err);
         }
       });
-      console.log(`${name}: Found ${katTorrents.length} torrents.`);
+      console.log(`${this.name}: Found ${katTorrents.length} torrents.`);
       return katTorrents;
     } catch (err) {
-      return util.onError(err);
+      return this.util.onError(err);
     }
   };
 
@@ -195,39 +198,33 @@ const KAT = name => {
    * @param {Object} provider - The provider to query {@link https://kat.cr/}.
    * @returns {Array} - A list of scraped shows.
    */
-  const search = async provider => {
+  async search(provider) {
     try {
-      console.log(`${name} : Starting scraping...`);
+      console.log(`${this.name} : Starting scraping...`);
       provider.query.page = 1;
       provider.query.category = "tv";
       provider.query.verified = 1;
       provider.query.adult_filter = 1;
       provider.query.language = "en";
 
-      const getTotalPages = await kat.search(provider.query);
+      const getTotalPages = await this.kat.search(provider.query);
       const totalPages = getTotalPages.totalPages; // Change to 'const' for production.
-      if (!totalPages) return util.onError(`${name}: totalPages returned; '${totalPages}'`);
+      if (!totalPages) return this.util.onError(`${this.name}: totalPages returned; '${totalPages}'`);
       // totalPages = 3; // For testing purposes only.
-      console.log(`${name}: Total pages ${totalPages}`);
+      console.log(`${this.name}: Total pages ${totalPages}`);
 
-      const katTorrents = await getAllTorrents(totalPages, provider);
-      const katShows = await getAllKATShows(katTorrents);
+      const katTorrents = await this.getAllTorrents(totalPages, provider);
+      const katShows = await this.getAllKATShows(katTorrents);
       return await asyncq.mapLimit(katShows, global.maxWebRequest, async katShow => {
         try {
-          return await getShow(katShow);
+          return await this.getShow(katShow);
         } catch (err) {
-          return util.onError(err);
+          return this.util.onError(err);
         }
       });
     } catch (err) {
-      return util.onError(err);
+      return this.util.onError(err);
     }
   };
 
-  // Return the public functions.
-  return { search };
-
 };
-
-// Export the KAT factory function.
-export default KAT;

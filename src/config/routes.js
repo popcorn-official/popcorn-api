@@ -1,5 +1,6 @@
 // Import the neccesary modules.
 import Index from "../controllers/index";
+import Animes from "../controllers/animes";
 import Movies from "../controllers/movies";
 import Shows from "../controllers/shows";
 
@@ -8,11 +9,15 @@ import Shows from "../controllers/shows";
  * @classdesc The factory function for setting up the routes for the API.
  * @memberof module:config/routes
  */
-const Routes = () => {
+export default class Routes {
 
-  const index = Index();
-  const movies = Movies();
-  const shows = Shows();
+  constructor() {
+    this.index = new Index();
+
+    this.animes = new Animes();
+    this.movies = new Movies();
+    this.shows = new Shows();
+  };
 
   /**
    * @description Setup ExpressJS routing.
@@ -20,25 +25,24 @@ const Routes = () => {
    * @memberof module:config/routes
    * @param {ExpressJS} app - The ExpresssJS application.
    */
-  const routes = app => {
-    app.get("/", index.getIndex);
-    app.get("/logs/error", index.getErrorLog);
+  routes(app) {
+    app.get("/", this.index.getIndex);
+    app.get("/logs/error", this.index.getErrorLog);
 
-    app.get("/movie/:id", movies.getMovie);
-    app.get("/movies", movies.getMovies);
-    app.get("/movies/:page", movies.getPage);
+    app.get("/animes", this.animes.getAnimes);
+    app.get("/animes/:page", this.animes.getPage);
+    app.get("/anime/:id", this.animes.getAnime);
+    app.get("/random/anime", this.animes.getRandomAnime);
 
-    app.get("/random/movie", movies.getRandomMovie);
+    app.get("/movies", this.movies.getMovies);
+    app.get("/movies/:page", this.movies.getPage);
+    app.get("/movie/:id", this.movies.getMovie);
+    app.get("/random/movie", this.movies.getRandomMovie);
 
-    app.get("/show/:id", shows.getShow);
-    app.get("/shows", shows.getShows);
-    app.get("/shows/:page", shows.getPage);
+    app.get("/shows", this.shows.getShows);
+    app.get("/shows/:page", this.shows.getPage);
+    app.get("/show/:id", this.shows.getShow);
+    app.get("/random/show", this.shows.getRandomShow);
   };
 
-  // Return the public functions.
-  return { routes };
-
 };
-
-// Export the Routes factory function.
-export default Routes;

@@ -1,4 +1,32 @@
-const katMap = {
+import path from "path";
+
+const global = {
+  master: true,
+  port: 5000,
+  workers: 2,
+  scrapeTime: "0 0 */6 * * *",
+  pageSize: 50,
+  serverName: "serv01",
+  tempDir: path.join(process.cwd(), "tmp"),
+  statusFile: "status.json",
+  updatedFile: "lastUpdated.json",
+  dbHosts: ["localhost"],
+  maxWebRequest: 2,
+  webRequestTimeout: 2,
+  traktKey: "70c43f8f4c0de74a33ac1e66b6067f11d14ad13e33cd4ebd08860ba8be014907",
+  Promise
+};
+
+const katAnimeMap = {
+  "kabaneri-of-the-iron-fortress": "koutetsujou-no-kabaneri",
+  "luck-&-logic": "luck-logic",
+  "naruto-shippuuden": "naruto-shippuden",
+  "norn9norn+nonet": "norn9-norn-nonet",
+  "sailor-moon-crystal": "bishoujo-senshi-sailor-moon-crystal",
+  "yuruyuri": "yuru-yuri"
+};
+
+const katShowMap = {
   "60-minutes-us": "60-minutes",
   "american-crime": "american-crime-1969",
   "bachelor-live": "the-bachelor-live",
@@ -63,11 +91,55 @@ const katMap = {
   "youre-the-worst": "you-re-the-worst"
 };
 
+const movieProviders = [
+  // English providers
+  {name: "Megaradon", query: {query: "x264 720p | 1080p", uploader: "megaradon", language: "en"}},
+  {name: "Z0n321", query: {query: "x264 720p | 1080p", uploader: "z0n321", language: "en"}},
+
+  // French providers
+  {name: "French", query: {query: "720p | 1080p", language: "fr"}},
+  // German providers
+  {name: "German", query: {query: "720p | 1080p", language: "de"}},
+  // Spanish providers
+  {name: "Spanish", query: {query: "720p | 1080p", language: "es"}},
+  // Ductch providers
+  {name: "Dutch", query: {query: "720p | 1080p", language: "nl"}}
+];
+
+const showProviders = [
+  // 720p and 1080p providers
+  {name: "Zoner720p", query: {query: "x264 720p", uploader: "z0n321"}},
+  {name: "Zoner1080p", query: {query: "x264 1080p", uploader: "z0n321"}},
+  {name: "Brasse0", query: {query: "x264", uploader: "brasse0"}},
+  {name: "ETHD", query: {query: "x264", uploader: "ethd"}},
+
+  // Uploader providers
+  {name: "ETTV", query: {query: "x264", uploader: "ettv"}},
+  {name: "KAT_EZTV", query: {query: "x264", uploader: "eztv"}},
+  {name: "VTV", query: {query: "x264", uploader: "vtv"}},
+  {name: "SRIGGA", query: {query: "x264", uploader: "ethd"}},
+
+  // Zoner providers
+  {name: "ZonerSD", query: {query: "x264 LOL | FLEET | KILLERS | W4F", uploader: "z0n321"}}
+];
+
+const animeProviders = [
+  
+];
+
 /**
- * @class KAT
- * @classdesc Holder to export all the kat configuration objects.
- * @memberof module:config/kat
+ * @class Global
+ * @classdesc Holder to export all the global configuration objects.
+ * @memberof module:config/global
+ * @property {Object} global - The configuration object with properties
+ * used over the whole API.
  * @property {Object} katMap - The configuration object with the correct
  * slugs for {@link https://kat.cr/}.
+ * @property {Object} animeProviders - Providers used for scraping anime from
+ * {@link https://kat.cr/}.
+ * @property {Object} movieProviders - Providers used for scraping shows from
+ * {@link https://kat.cr/}.
+ * @property {Object} showProviders - Providers used for scraping movies from
+ * {@link https://kat.cr/}.
  */
-export { katMap };
+export { global, katAnimeMap, katShowMap, animeProviders, movieProviders, showProviders };
