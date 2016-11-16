@@ -240,8 +240,8 @@ export default class CLI {
           if (!data[language]) data[language] = {};
           if (!data[language][quality]) data[language][quality] = {
             url: magnet,
-            seed: seeds,
-            peer: peers,
+            seeds: seeds,
+            peers: peers,
             size: result.length,
             filesize: bytes(result.length),
             provider: CLI._providerName
