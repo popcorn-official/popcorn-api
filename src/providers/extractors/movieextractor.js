@@ -79,8 +79,8 @@ export default class Extractor extends BaseExtractor {
     movie.torrents[language] = {};
     movie.torrents[language][quality] = {
       url: torrent.magnet ? torrent.magnet : torrent.torrent_link,
-      seed: torrent.seeds ? torrent.seeds : 0,
-      peer: torrent.peers ? torrent.peers : 0,
+      seeds: torrent.seeds ? torrent.seeds : 0,
+      peers: torrent.peers ? torrent.peers : 0,
       size: bytes(size.replace(/\s/g, "")),
       filesize: size,
       provider: this.name
