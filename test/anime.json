@@ -1,0 +1,60 @@
+{
+    "_id": "5646",
+    "mal_id": "9253",
+    "title": "Steins;Gate",
+    "year": "2011",
+    "slug": "steins-gate",
+    "synopsis": "Steins;Gate is set in the summer of 2010, approximately one year after the events that took place in Chaos;Head, in Akihabara.\n\nSteins;Gate is about a group of friends who have customized their microwave into a device that can send emails to the past (known as D-mails). As they perform different experiments, an organization named SERN, who has been doing their own research on time travel, tracks them down and now the characters have to find a way to avoid being captured by them.\n\n(Sources: VNDB, Wikipedia)",
+    "runtime": "24",
+    "status": "Finished Airing",
+    "type": "show",
+    "last_updated": 1479656418845,
+    "__v": 0,
+    "num_seasons": 1,
+    "episodes": [{
+        "tvdb_id": "5646-1-13",
+        "overview": "We still don't have single episode overviews for anime… Sorry",
+        "episode": "13",
+        "season": "1",
+        "torrents": {
+            "0": {
+                "provider": "HorribleSubs",
+                "peers": 0,
+                "seeds": 0,
+                "url": "magnet:?xt=urn:btih:IEQGMZOUZJQ5FJJZNURKTTND3KUHBAHT&tr=http://open.nyaatorrents.info:6544/announce&tr=udp://open.demonii.com:1337/announce&tr=udp://tracker.openbittorrent.com:80/announce"
+            },
+            "480p": {
+                "provider": "HorribleSubs",
+                "peers": 0,
+                "seeds": 0,
+                "url": "magnet:?xt=urn:btih:IEQGMZOUZJQ5FJJZNURKTTND3KUHBAHT&tr=http://open.nyaatorrents.info:6544/announce&tr=udp://open.demonii.com:1337/announce&tr=udp://tracker.openbittorrent.com:80/announce"
+            },
+            "720p": {
+                "provider": "HorribleSubs",
+                "peers": 0,
+                "seeds": 0,
+                "url": "magnet:?xt=urn:btih:MCZBSUZP4YX2O4SBMBBXLFWBIQCEPOZF&tr=http://open.nyaatorrents.info:6544/announce&tr=udp://open.demonii.com:1337/announce&tr=udp://tracker.openbittorrent.com:80/announce"
+            },
+            "1080p": {
+                "provider": "HorribleSubs",
+                "peers": 0,
+                "seeds": 0,
+                "url": "magnet:?xt=urn:btih:IEQGMZOUZJQ5FJJZNURKTTND3KUHBAHT&tr=http://open.nyaatorrents.info:6544/announce&tr=udp://open.demonii.com:1337/announce&tr=udp://tracker.openbittorrent.com:80/announce"
+            }
+        },
+        "title": "Episode 13"
+    }],
+    "genres": ["Comedy", "Sci-Fi", "Mystery", "Thriller", "Drama"],
+    "images": {
+        "poster": "https://static.hummingbird.me/anime/poster_images/000/005/646/large/iJvXXwfdhJHaG.jpg?1416278953",
+        "fanart": "https://static.hummingbird.me/anime/poster_images/000/005/646/large/iJvXXwfdhJHaG.jpg?1416278953",
+        "banner": "https://static.hummingbird.me/anime/poster_images/000/005/646/large/iJvXXwfdhJHaG.jpg?1416278953"
+    },
+    "rating": {
+        "percentage": 92,
+        "watching": 0,
+        "votes": 0,
+        "loved": 100,
+        "hated": 100
+    }
+}

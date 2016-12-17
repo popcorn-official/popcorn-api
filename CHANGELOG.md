@@ -1,3 +1,12 @@
+# 2.2.4 - Keep it working - 17 December 2016
+
+ - **New features:**
+   - Testing with [Dredd](https://github.com/apiaryio/dredd) in favor of mocha.
+   - Better fetching of images.
+
+ - **Bug fixes:**
+   - Fixed ExtraTorrent scraping with [extratorrent-api@1.0.9](https://github.com/ChrisAlderson/extratorrent-api).
+
 # 2.2.3 - Can you see me now? - 19 November 2016
 
 - **New features:**

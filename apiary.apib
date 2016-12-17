@@ -4,16 +4,68 @@ HOST: https://tv-v2.api-fetch.website/
 # Popcorn API
 Popcorn API is developed to make it easier for anyone to create their own version of [Popcorn Time](https://popcorntime.sh/).
 
-# Group Index
+# Group Status
 
-## Index [/]
+## Status [/status]
 
-### Get Index [GET]
+### Get Status [GET]
 
 Gives some basic information about the server on which the API is running on.
- + Response 200 (application/json)
-    + Body 
-        {"repo":"https://github.com/popcorn-official/popcorn-api.git","server":"serv01","status":"Idle","totalAnimes":623,"totalMovies":5581,"totalShows":1479,"updated":1470262496,"uptime":50529,"version":"2.1.0","commit":"d8e360f"}
+  + Response 200 (application/json; charset=utf-8)
+
+      + Body
+
+            {
+                "repo": "https://github.com/popcorn-official/popcorn-api.git",
+                "server": "serv01",
+                "status": "Idle",
+                "totalAnimes": 623,
+                "totalMovies": 5581,
+                "totalShows": 1479,
+                "updated": 1470262496,
+                "uptime": 50529,
+                "version": "2.1.0",
+                "commit": "d8e360f"
+            }
+
+      + Schema
+
+            {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                  "repo": {
+                      "type": "string"
+                  },
+                  "server": {
+                      "type": "string"
+                  },
+                  "status": {
+                      "type": "string"
+                  },
+                  "totalAnimes": {
+                      "type": "number"
+                  },
+                  "totalMovies": {
+                      "type": "number"
+                  },
+                  "totalShows": {
+                      "type": "number"
+                  },
+                  "updated": {
+                      "type": "number"
+                  },
+                  "uptime": {
+                      "type": "number"
+                  },
+                  "version": {
+                      "type": "string"
+                  },
+                  "commit": {
+                      "type": "string"
+                  }
+                }
+            }
 
 
 # Group Logs
@@ -22,21 +74,23 @@ Gives some basic information about the server on which the API is running on.
 
 ### Get Error Logs [GET]
 Display the error log. Each message will be in JSON format.
- + Response 200 (text/plain)
+  + Response 204 (text/plain; charset=UTF-8)
+
 
 # Group Export
 
 ## Export [/exports/{collection}]
- + Parameters
-    + collection (string, `anime`) - The name of the collection you want to download.
-        + Values
-            + `anime`
-            + `movie`
-            + `show`
 
 ### Export Collection [GET]
 Download the contents a collection in a JSON file.
- + Response 200 (application/json)
+  + Parameters
+      + collection (string, `anime`) - The name of the collection you want to download.
+          + Values
+              + `anime`
+              + `movie`
+              + `show`
+
+  + Response 201 (application/json)
 
 
 # Group Anime
@@ -45,48 +99,319 @@ Download the contents a collection in a JSON file.
 
 ### Pages [GET]
 Gives an array of the available pages for anime content.
- + Response 200 (application/json)
+ + Response 200 (application/json; charset=utf-8)
+
     + Body
-        ["animes/1","animes/2","animes/3","animes/4","animes/5","animes/6","animes/7","animes/8","animes/9","animes/10","animes/11","animes/12"]
+
+            ["animes/1","animes/2","animes/3","animes/4","animes/5","animes/6","animes/7","animes/8","animes/9","animes/10","animes/11","animes/12"]
+
+    + Schema
+
+            {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "array",
+                "items": {
+                    "type": "string"
+                },
+                "minItems": 1
+            }
 
 ## Get Page [/animes/{page}{?sort,order,genre,keywords}]
- + Parameters
-    + page (integer, `1`) - The page of the content you want.
-    + sort (string, `rating`) - Sort the list of content.
-        + Values
-            + `name`
-            + `rating`
-            + `year`
-    + order (integer, `-1`) - Order the list of content.
-        + Values
-            + `1`
-            + `-1`
-    + genre (string, `Action`) - Filter on a genre.
-    + keywords (string, `one piece`) - Seach based on keywords.
-    
+
 ### Page [GET]
 Gives an array of anime shows. The array has a has a maximum length of 50 anime shows per page.
- + Response 200 (application/json)
-    + Body
-        [{"_id":"5646","mal_id":"9253","title":"Steins;Gate","year":"2011","slug":"steins-gate","type":"show","genres":["Comedy","Sci-Fi","Mystery","Thriller","Drama"],"images":{"banner":"https://static.hummingbird.me/anime/poster_images/000/005/646/large/iJvXXwfdhJHaG.jpg?1416278953","fanart":"https://static.hummingbird.me/anime/poster_images/000/005/646/large/iJvXXwfdhJHaG.jpg?1416278953","poster":"https://static.hummingbird.me/anime/poster_images/000/005/646/large/iJvXXwfdhJHaG.jpg?1416278953"},"rating":{"hated":100,"loved":100,"votes":0,"watching":0,"percentage":92}},{"_id":"10740","mal_id":"30276","title":"One Punch Man","year":"2015","slug":"one-punch-man","type":"show","genres":["Comedy","Sci-Fi","Supernatural","Super Power","Parody","Action"],"images":{"banner":"https://static.hummingbird.me/anime/poster_images/000/010/740/large/vAZRjfm.jpg?1441243505","fanart":"https://static.hummingbird.me/anime/poster_images/000/010/740/large/vAZRjfm.jpg?1441243505","poster":"https://static.hummingbird.me/anime/poster_images/000/010/740/large/vAZRjfm.jpg?1441243505"},"rating":{"hated":100,"loved":100,"votes":0,"watching":0,"percentage":90}}]
-        
+  + Parameters
+      + page (integer, `1`) - The page of the content you want.
+      + sort (string, `rating`) - Sort the list of content.
+          + Values
+              + `name`
+              + `rating`
+              + `year`
+      + order (integer, `-1`) - Order the list of content.
+          + Values
+              + `1`
+              + `-1`
+      + genre (string, `Drama`) - Filter on a genre.
+      + keywords (string, `steins gate`) - Seach based on keywords.
+
+  + Response 200 (application/json; charset=utf-8)
+
+      + Body
+
+            [{"_id":"5646","mal_id":"9253","title":"Steins;Gate","year":"2011","slug":"steins-gate","type":"show","genres":["Comedy","Sci-Fi","Mystery","Thriller","Drama"],"images":{"banner":"https://static.hummingbird.me/anime/poster_images/000/005/646/large/iJvXXwfdhJHaG.jpg?1416278953","fanart":"https://static.hummingbird.me/anime/poster_images/000/005/646/large/iJvXXwfdhJHaG.jpg?1416278953","poster":"https://static.hummingbird.me/anime/poster_images/000/005/646/large/iJvXXwfdhJHaG.jpg?1416278953"},"rating":{"hated":100,"loved":100,"votes":0,"watching":0,"percentage":92}},{"_id":"10740","mal_id":"30276","title":"One Punch Man","year":"2015","slug":"one-punch-man","type":"show","genres":["Comedy","Sci-Fi","Supernatural","Super Power","Parody","Action"],"images":{"banner":"https://static.hummingbird.me/anime/poster_images/000/010/740/large/vAZRjfm.jpg?1441243505","fanart":"https://static.hummingbird.me/anime/poster_images/000/010/740/large/vAZRjfm.jpg?1441243505","poster":"https://static.hummingbird.me/anime/poster_images/000/010/740/large/vAZRjfm.jpg?1441243505"},"rating":{"hated":100,"loved":100,"votes":0,"watching":0,"percentage":90}}]
+
+      + Schema
+
+            {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                            "type": "string"
+                        },
+                        "mal_id": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        },
+                        "year": {
+                            "type": "string"
+                        },
+                        "slug": {
+                            "type": "string"
+                        },
+                        "num_seasons": {
+                            "type": "number"
+                        },
+                        "genres": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "minItems": 1
+                        },
+                        "images": {
+                            "type": "object",
+                            "properties": {
+                                "poster": {
+                                    "type": "string"
+                                },
+                                "fanart": {
+                                    "type": "string"
+                                },
+                                "banner": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "rating": {
+                            "type": "object",
+                            "properties": {
+                                "percentage": {
+                                    "type": "number"
+                                },
+                                "watching": {
+                                    "type": "number"
+                                },
+                                "votes": {
+                                    "type": "number"
+                                },
+                                "loved": {
+                                    "type": "number"
+                                },
+                                "hated": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                },
+                "minItems": 1
+            }
+
+
 ## Get Details [/anime/{id}]
- + Parameters
-    + id (integer, `5646`) - The id of the anime you want details on.
 
 ### Details [GET]
 Gives information about a single anime show based on the given id.
- + Response 200 (application/json)
-    + Body
-        {"_id":"5646","mal_id":"9253","title":"Steins;Gate","year":"2011","slug":"steins-gate","synopsis":"Steins;Gate is set in the summer of 2010, approximately one year after the events that took place in Chaos;Head, in Akihabara.\n\nSteins;Gate is about a group of friends who have customized their microwave into a device that can send emails to the past (known as D-mails). As they perform different experiments, an organization named SERN, who has been doing their own research on time travel, tracks them down and now the characters have to find a way to avoid being captured by them.\n\n(Sources: VNDB, Wikipedia)","runtime":"24","status":"Finished Airing","type":"show","num_episodes":12,"last_updated":1470264194722,"__v":0,"episodes":[{"title":"Episode 13","torrents":{"0":{"url":"magnet:?xt=urn:btih:IEQGMZOUZJQ5FJJZNURKTTND3KUHBAHT&tr=http://open.nyaatorrents.info:6544/announce&tr=udp://open.demonii.com:1337/announce&tr=udp://tracker.openbittorrent.com:80/announce","seeds":0,"peers":0,"provider":"HorribleSubs"},"480p":{"url":"magnet:?xt=urn:btih:IEQGMZOUZJQ5FJJZNURKTTND3KUHBAHT&tr=http://open.nyaatorrents.info:6544/announce&tr=udp://open.demonii.com:1337/announce&tr=udp://tracker.openbittorrent.com:80/announce","seeds":0,"peers":0,"provider":"HorribleSubs"},"720p":{"url":"magnet:?xt=urn:btih:MCZBSUZP4YX2O4SBMBBXLFWBIQCEPOZF&tr=http://open.nyaatorrents.info:6544/announce&tr=udp://open.demonii.com:1337/announce&tr=udp://tracker.openbittorrent.com:80/announce","seeds":0,"peers":0,"provider":"HorribleSubs"}},"season":"1","episode":"13","overview":"We still don't have single episode overviews for anime… Sorry","tvdb_id":"5646-1-13"}],"genres":["Comedy","Sci-Fi","Mystery","Thriller","Drama"],"images":{"banner":"https://static.hummingbird.me/anime/poster_images/000/005/646/large/iJvXXwfdhJHaG.jpg?1416278953","fanart":"https://static.hummingbird.me/anime/poster_images/000/005/646/large/iJvXXwfdhJHaG.jpg?1416278953","poster":"https://static.hummingbird.me/anime/poster_images/000/005/646/large/iJvXXwfdhJHaG.jpg?1416278953"},"rating":{"hated":100,"loved":100,"votes":0,"watching":0,"percentage":92}}
-        
+  + Parameters
+      + id (integer, `5646`) - The id of the anime you want details on.
+
+  + Response 200 (application/json; charset=utf-8)
+
+      + Body
+
+            {"_id":"5646","mal_id":"9253","title":"Steins;Gate","year":"2011","slug":"steins-gate","synopsis":"Steins;Gate is set in the summer of 2010, approximately one year after the events that took place in Chaos;Head, in Akihabara.\n\nSteins;Gate is about a group of friends who have customized their microwave into a device that can send emails to the past (known as D-mails). As they perform different experiments, an organization named SERN, who has been doing their own research on time travel, tracks them down and now the characters have to find a way to avoid being captured by them.\n\n(Sources: VNDB, Wikipedia)","runtime":"24","status":"Finished Airing","type":"show","last_updated":1479656418845,"__v":0,"num_seasons":1,"episodes":[{"tvdb_id":"5646-1-13","overview":"We still don't have single episode overviews for anime… Sorry","episode":"13","season":"1","torrents":{"0":{"provider":"HorribleSubs","peers":0,"seeds":0,"url":"magnet:?xt=urn:btih:IEQGMZOUZJQ5FJJZNURKTTND3KUHBAHT&tr=http://open.nyaatorrents.info:6544/announce&tr=udp://open.demonii.com:1337/announce&tr=udp://tracker.openbittorrent.com:80/announce"},"480p":{"provider":"HorribleSubs","peers":0,"seeds":0,"url":"magnet:?xt=urn:btih:IEQGMZOUZJQ5FJJZNURKTTND3KUHBAHT&tr=http://open.nyaatorrents.info:6544/announce&tr=udp://open.demonii.com:1337/announce&tr=udp://tracker.openbittorrent.com:80/announce"},"720p":{"provider":"HorribleSubs","peers":0,"seeds":0,"url":"magnet:?xt=urn:btih:MCZBSUZP4YX2O4SBMBBXLFWBIQCEPOZF&tr=http://open.nyaatorrents.info:6544/announce&tr=udp://open.demonii.com:1337/announce&tr=udp://tracker.openbittorrent.com:80/announce"},"1080p":{"provider":"HorribleSubs","peers":0,"seeds":0,"url":"magnet:?xt=urn:btih:IEQGMZOUZJQ5FJJZNURKTTND3KUHBAHT&tr=http://open.nyaatorrents.info:6544/announce&tr=udp://open.demonii.com:1337/announce&tr=udp://tracker.openbittorrent.com:80/announce"}},"title":"Episode 13"}],"genres":["Comedy","Sci-Fi","Mystery","Thriller","Drama"],"images":{"poster":"https://static.hummingbird.me/anime/poster_images/000/005/646/large/iJvXXwfdhJHaG.jpg?1416278953","fanart":"https://static.hummingbird.me/anime/poster_images/000/005/646/large/iJvXXwfdhJHaG.jpg?1416278953","banner":"https://static.hummingbird.me/anime/poster_images/000/005/646/large/iJvXXwfdhJHaG.jpg?1416278953"},"rating":{"percentage":92,"watching":0,"votes":0,"loved":100,"hated":100}}
+
+    + Schema
+
+            {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    },
+                    "mal_id": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "year": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "synopsis": {
+                        "type": "string"
+                    },
+                    "runtime": {
+                        "type": "string"
+                    },
+                    "status": {
+                        "type": "string"
+                    },
+                    "type": {
+                        "type": "string"
+                    },
+                    "last_updated": {
+                        "type": "number"
+                    },
+                    "__v": {
+                        "type": "number"
+                    },
+                    "num_seasons": {
+                        "type": "number"
+                    },
+                    "episodes": {
+                        "type": "array",
+                        "properties": {
+                            "tvdb_id": {
+                                "type": "string"
+                            },
+                            "overview": {
+                                "type": "string"
+                            },
+                            "episode": {
+                                "type": "string"
+                            },
+                            "season": {
+                                "type": "string"
+                            },
+                            "torrents": {
+                                "type": "object"
+                            },
+                            "title": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "genres": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "minItems": 1
+                    },
+                    "images": {
+                        "type": "object",
+                        "properties": {
+                            "poster": {
+                                "type": "string"
+                            },
+                            "fanart": {
+                                "type": "string"
+                            },
+                            "banner": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "rating": {
+                        "type": "object",
+                        "properties": {
+                            "percentage": {
+                                "type": "number"
+                            },
+                            "watching": {
+                                "type": "number"
+                            },
+                            "votes": {
+                                "type": "number"
+                            },
+                            "loved": {
+                                "type": "number"
+                            },
+                            "hated": {
+                                "type": "number"
+                            }
+                        }
+                    }
+                }
+            }
+
 ## Get Random [/random/anime]
 
 ### Random [GET]
 Gives a random anime from the database.
-+ Response 200 (application/json)
-    + Body
-        {"_id":"5978","mal_id":"9981","title":"Phi Brain: Kami no Puzzle","year":"2011","slug":"phi-brain-kami-no-puzzle","type":"show","genres":["Adventure","Comedy","Mystery","Game","Action"],"images":{"poster":"https://static.hummingbird.me/anime/poster_images/000/005/978/large/75d1b823fb4ffadffd0d4946e0bcbd901375685030_full.jpg?1408457092","fanart":"https://static.hummingbird.me/anime/poster_images/000/005/978/large/75d1b823fb4ffadffd0d4946e0bcbd901375685030_full.jpg?1408457092","banner":"https://static.hummingbird.me/anime/poster_images/000/005/978/large/75d1b823fb4ffadffd0d4946e0bcbd901375685030_full.jpg?1408457092"},"rating":{"percentage":70,"watching":0,"votes":0,"loved":100,"hated":100}}
+  + Response 200 (application/json; charset=utf-8)
+
+      + Body
+
+            {"_id":"5978","mal_id":"9981","title":"Phi Brain: Kami no Puzzle","year":"2011","slug":"phi-brain-kami-no-puzzle","type":"show","genres":["Adventure","Comedy","Mystery","Game","Action"],"images":{"poster":"https://static.hummingbird.me/anime/poster_images/000/005/978/large/75d1b823fb4ffadffd0d4946e0bcbd901375685030_full.jpg?1408457092","fanart":"https://static.hummingbird.me/anime/poster_images/000/005/978/large/75d1b823fb4ffadffd0d4946e0bcbd901375685030_full.jpg?1408457092","banner":"https://static.hummingbird.me/anime/poster_images/000/005/978/large/75d1b823fb4ffadffd0d4946e0bcbd901375685030_full.jpg?1408457092"},"rating":{"percentage":70,"watching":0,"votes":0,"loved":100,"hated":100}}
+
+      + Schema
+
+            {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    },
+                    "mal_id": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "year": {
+                        "type": "string"
+                    },
+                    "slug": {
+                        "type": "string"
+                    },
+                    "num_seasons": {
+                        "type": "number"
+                    },
+                    "genres": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "minItems": 1
+                    },
+                    "images": {
+                        "type": "object",
+                        "properties": {
+                            "poster": {
+                                "type": "string"
+                            },
+                            "fanart": {
+                                "type": "string"
+                            },
+                            "banner": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "rating": {
+                        "type": "object",
+                        "properties": {
+                            "percentage": {
+                                "type": "number"
+                            },
+                            "watching": {
+                                "type": "number"
+                            },
+                            "votes": {
+                                "type": "number"
+                            },
+                            "loved": {
+                                "type": "number"
+                            },
+                            "hated": {
+                                "type": "number"
+                            }
+                        }
+                    }
+                }
+            }
 
 
 # Group Movie
@@ -95,101 +420,615 @@ Gives a random anime from the database.
 
 ### Pages [GET]
 Gives an array of the available pages for movie content.
- + Response 200 (application/json)
-    + Body
-        ["movies/1","movies/2","movies/3","movies/4","movies/5","movies/6","movies/7","movies/8","movies/9","movies/10","movies/11","movies/12","movies/13","movies/14","movies/15","movies/16","movies/17","movies/18","movies/19","movies/20","movies/21","movies/22","movies/23","movies/24","movies/25","movies/26","movies/27","movies/28","movies/29","movies/30","movies/31","movies/32","movies/33","movies/34","movies/35","movies/36","movies/37","movies/38","movies/39","movies/40","movies/41","movies/42","movies/43","movies/44","movies/45","movies/46","movies/47","movies/48","movies/49","movies/50","movies/51","movies/52","movies/53","movies/54","movies/55","movies/56","movies/57","movies/58","movies/59","movies/60","movies/61","movies/62","movies/63","movies/64","movies/65","movies/66","movies/67","movies/68","movies/69","movies/70","movies/71","movies/72","movies/73","movies/74","movies/75","movies/76","movies/77","movies/78","movies/79","movies/80","movies/81","movies/82","movies/83","movies/84","movies/85","movies/86","movies/87","movies/88","movies/89","movies/90","movies/91","movies/92","movies/93","movies/94","movies/95","movies/96","movies/97","movies/98","movies/99","movies/100","movies/101","movies/102","movies/103","movies/104","movies/105","movies/106","movies/107","movies/108","movies/109","movies/110","movies/111","movies/112"]
+  + Response 200 (application/json; charset=utf-8)
+
+      + Body
+
+            ["movies/1","movies/2","movies/3","movies/4","movies/5","movies/6","movies/7","movies/8","movies/9","movies/10","movies/11","movies/12","movies/13","movies/14","movies/15","movies/16","movies/17","movies/18","movies/19","movies/20","movies/21","movies/22","movies/23","movies/24","movies/25","movies/26","movies/27","movies/28","movies/29","movies/30","movies/31","movies/32","movies/33","movies/34","movies/35","movies/36","movies/37","movies/38","movies/39","movies/40","movies/41","movies/42","movies/43","movies/44","movies/45","movies/46","movies/47","movies/48","movies/49","movies/50","movies/51","movies/52","movies/53","movies/54","movies/55","movies/56","movies/57","movies/58","movies/59","movies/60","movies/61","movies/62","movies/63","movies/64","movies/65","movies/66","movies/67","movies/68","movies/69","movies/70","movies/71","movies/72","movies/73","movies/74","movies/75","movies/76","movies/77","movies/78","movies/79","movies/80","movies/81","movies/82","movies/83","movies/84","movies/85","movies/86","movies/87","movies/88","movies/89","movies/90","movies/91","movies/92","movies/93","movies/94","movies/95","movies/96","movies/97","movies/98","movies/99","movies/100","movies/101","movies/102","movies/103","movies/104","movies/105","movies/106","movies/107","movies/108","movies/109","movies/110","movies/111","movies/112"]
+
+      + Schema
+
+            {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "type": "array",
+                "items": {
+                    "type": "string"
+                },
+                "minItems": 1
+            }
 
 ## Get Page [/movies/{page}{?sort,order,genre,keywords}]
- + Parameters
-    + page (integer, `1`) - The page of the content you want.
-    + sort (string, `last added`) - Sort the list of content.
-        + Values
-            + `last added`
-            + `rating`
-            + `title`
-            + `trending`
-            + `year`
-    + order (integer, `-1`) - Order the list of content.
-        + Values
-            + `1`
-            + `-1`
-    + genre (string, `action`) - Filter on a genre.
-    + keywords (string, `batman`) - Seach based on keywords.
 
 ### Page [GET]
 Gives an array of movies. The array has a has a maximum length of 50 movies per page.
- + Response 200 (application/json)
-    + Body
-        [{"_id":"tt1375666","imdb_id":"tt1375666","title":"Inception","year":"2010","synopsis":"Cobb, a skilled thief who commits corporate espionage by infiltrating the subconscious of his targets is offered a chance to regain his old life as payment for a task considered to be impossible: \"inception\", the implantation of another person's idea into a target's subconscious.","runtime":"148","released":1279238400,"trailer":"http://youtube.com/watch?v=xitHF0IPJSQ","certification":"PG-13","torrents":{"en":{"1080p":{"provider":"YTS","filesize":"1.85 GB","size":1986422374,"peer":119,"seed":1245,"url":"magnet:?xt=urn:btih:224BF45881252643DFC2E71ABC7B2660A21C68C4&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337"},"720p":{"provider":"YTS","filesize":"1.07 GB","size":1148903752,"peer":57,"seed":728,"url":"magnet:?xt=urn:btih:CE9156EB497762F8B7577B71C0647A4B0C3423E1&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337"}}},"genres":["action","adventure","mystery","science-fiction","thriller"],"images":{"banner":"https://walter.trakt.us/images/movies/000/016/662/banners/original/9bd450d083.jpg","fanart":"https://walter.trakt.us/images/movies/000/016/662/fanarts/original/d02c86e1f7.jpg","poster":"https://walter.trakt.us/images/movies/000/016/662/posters/original/a7f71cbc67.jpg"},"rating":{"hated":100,"loved":100,"votes":25134,"watching":3,"percentage":88}},{"_id":"tt0468569","imdb_id":"tt0468569","title":"The Dark Knight","year":"2008","synopsis":"Batman raises the stakes in his war on crime. With the help of Lt. Jim Gordon and District Attorney Harvey Dent, Batman sets out to dismantle the remaining criminal organizations that plague the streets. The partnership proves to be effective, but they soon find themselves prey to a reign of chaos unleashed by a rising criminal mastermind known to the terrified citizens of Gotham as the Joker.","runtime":"152","released":1216339200,"trailer":"http://youtube.com/watch?v=GVx5K8WfFJY","certification":"PG-13","torrents":{"en":{"1080p":{"provider":"YTS","filesize":"1.70 GB","size":1825361101,"peer":130,"seed":698,"url":"magnet:?xt=urn:btih:A54926C2E07B0E5F0243954330B599B31C804F0B&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337"},"720p":{"provider":"YTS","filesize":"949.99 MB","size":996136714,"peer":81,"seed":372,"url":"magnet:?xt=urn:btih:F5D61BF3D57082BA2EE1305DA5DF8DCD10D34539&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337"}}},"genres":["action","crime","drama","thriller"],"images":{"banner":"https://walter.trakt.us/images/movies/000/000/120/banners/original/7065417461.jpg","fanart":"https://walter.trakt.us/images/movies/000/000/120/fanarts/original/f7884a908e.jpg","poster":"https://walter.trakt.us/images/movies/000/000/120/posters/original/8369bf0d4a.jpg"},"rating":{"hated":100,"loved":100,"votes":25094,"watching":4,"percentage":90}}]
+  + Parameters
+      + page (integer, `1`) - The page of the content you want.
+      + sort (string, `last added`) - Sort the list of content.
+          + Values
+              + `last added`
+              + `rating`
+              + `title`
+              + `trending`
+              + `year`
+      + order (integer, `-1`) - Order the list of content.
+          + Values
+              + `1`
+              + `-1`
+      + genre (string, `action`) - Filter on a genre.
+      + keywords (string, `inception`) - Seach based on keywords.
+
+  + Response 200 (application/json; charset=utf-8)
+
+      + Body
+
+            [{"_id":"tt1375666","imdb_id":"tt1375666","title":"Inception","year":"2010","synopsis":"Cobb, a skilled thief who commits corporate espionage by infiltrating the subconscious of his targets is offered a chance to regain his old life as payment for a task considered to be impossible: \"inception\", the implantation of another person's idea into a target's subconscious.","runtime":"148","released":1279238400,"trailer":"http://youtube.com/watch?v=xitHF0IPJSQ","certification":"PG-13","torrents":{"en":{"1080p":{"provider":"YTS","filesize":"1.85 GB","size":1986422374,"peer":119,"seed":1245,"url":"magnet:?xt=urn:btih:224BF45881252643DFC2E71ABC7B2660A21C68C4&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337"},"720p":{"provider":"YTS","filesize":"1.07 GB","size":1148903752,"peer":57,"seed":728,"url":"magnet:?xt=urn:btih:CE9156EB497762F8B7577B71C0647A4B0C3423E1&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337"}}},"genres":["action","adventure","mystery","science-fiction","thriller"],"images":{"banner":"https://walter.trakt.us/images/movies/000/016/662/banners/original/9bd450d083.jpg","fanart":"https://walter.trakt.us/images/movies/000/016/662/fanarts/original/d02c86e1f7.jpg","poster":"https://walter.trakt.us/images/movies/000/016/662/posters/original/a7f71cbc67.jpg"},"rating":{"hated":100,"loved":100,"votes":25134,"watching":3,"percentage":88}},{"_id":"tt0468569","imdb_id":"tt0468569","title":"The Dark Knight","year":"2008","synopsis":"Batman raises the stakes in his war on crime. With the help of Lt. Jim Gordon and District Attorney Harvey Dent, Batman sets out to dismantle the remaining criminal organizations that plague the streets. The partnership proves to be effective, but they soon find themselves prey to a reign of chaos unleashed by a rising criminal mastermind known to the terrified citizens of Gotham as the Joker.","runtime":"152","released":1216339200,"trailer":"http://youtube.com/watch?v=GVx5K8WfFJY","certification":"PG-13","torrents":{"en":{"1080p":{"provider":"YTS","filesize":"1.70 GB","size":1825361101,"peer":130,"seed":698,"url":"magnet:?xt=urn:btih:A54926C2E07B0E5F0243954330B599B31C804F0B&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337"},"720p":{"provider":"YTS","filesize":"949.99 MB","size":996136714,"peer":81,"seed":372,"url":"magnet:?xt=urn:btih:F5D61BF3D57082BA2EE1305DA5DF8DCD10D34539&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337"}}},"genres":["action","crime","drama","thriller"],"images":{"banner":"https://walter.trakt.us/images/movies/000/000/120/banners/original/7065417461.jpg","fanart":"https://walter.trakt.us/images/movies/000/000/120/fanarts/original/f7884a908e.jpg","poster":"https://walter.trakt.us/images/movies/000/000/120/posters/original/8369bf0d4a.jpg"},"rating":{"hated":100,"loved":100,"votes":25094,"watching":4,"percentage":90}}]
+
+      + Schema
+
+            {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                            "type": "string"
+                        },
+                        "imdb_id": {
+                            "type": "string"
+                        },
+                        "title": {
+                            "type": "string"
+                        },
+                        "year": {
+                            "type": "string"
+                        },
+                        "synopsis": {
+                            "type": "string"
+                        },
+                        "runtime": {
+                            "type": "string"
+                        },
+                        "released": {
+                            "type": "number"
+                        },
+                        "trailer": {
+                            "type": "string"
+                        },
+                        "certification": {
+                            "type": "string"
+                        },
+                        "torrents": {
+                            "type": "object"
+                        },
+                        "genres": {
+                            "type": "array",
+                            "items": {
+                                "type": "string"
+                            },
+                            "minItems": 1
+                        },
+                        "images": {
+                            "type": "object",
+                            "properties": {
+                                "poster": {
+                                    "type": "string"
+                                },
+                                "fanart": {
+                                    "type": "string"
+                                },
+                                "banner": {
+                                    "type": "string"
+                                }
+                            }
+                        },
+                        "rating": {
+                            "type": "object",
+                            "properties": {
+                                "percentage": {
+                                    "type": "number"
+                                },
+                                "watching": {
+                                    "type": "number"
+                                },
+                                "votes": {
+                                    "type": "number"
+                                },
+                                "loved": {
+                                    "type": "number"
+                                },
+                                "hated": {
+                                    "type": "number"
+                                }
+                            }
+                        }
+                    }
+                },
+                "minItems": 1
+            }
 
 ## Get Details [/movie/{imdb_id}]
- + Parameters
-    + id (string, `tt1375666`) - The imdb id of the movie you want details on.
-    
+
 ### Details [GET]
 Gives information about a single movie based on the given imdb id.
- + Response 200 (application/json)
-    + Body
-        {"_id":"tt1375666","imdb_id":"tt1375666","title":"Inception","year":"2010","synopsis":"Cobb, a skilled thief who commits corporate espionage by infiltrating the subconscious of his targets is offered a chance to regain his old life as payment for a task considered to be impossible: \"inception\", the implantation of another person's idea into a target's subconscious.","runtime":"148","released":1279238400,"trailer":"http://youtube.com/watch?v=xitHF0IPJSQ","certification":"PG-13","torrents":{"en":{"1080p":{"provider":"YTS","filesize":"1.85 GB","size":1986422374,"peer":119,"seed":1245,"url":"magnet:?xt=urn:btih:224BF45881252643DFC2E71ABC7B2660A21C68C4&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337"},"720p":{"provider":"YTS","filesize":"1.07 GB","size":1148903752,"peer":57,"seed":728,"url":"magnet:?xt=urn:btih:CE9156EB497762F8B7577B71C0647A4B0C3423E1&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337"}}},"genres":["action","adventure","mystery","science-fiction","thriller"],"images":{"banner":"https://walter.trakt.us/images/movies/000/016/662/banners/original/9bd450d083.jpg","fanart":"https://walter.trakt.us/images/movies/000/016/662/fanarts/original/d02c86e1f7.jpg","poster":"https://walter.trakt.us/images/movies/000/016/662/posters/original/a7f71cbc67.jpg"},"rating":{"hated":100,"loved":100,"votes":25134,"watching":3,"percentage":88}}
+  + Parameters
+      + imdb_id (string, `tt1375666`) - The imdb id of the movie you want details on.
+
+  + Response 200 (application/json; charset=utf-8)
+
+      + Body
+
+            {"_id":"tt1375666","imdb_id":"tt1375666","title":"Inception","year":"2010","synopsis":"Cobb, a skilled thief who commits corporate espionage by infiltrating the subconscious of his targets is offered a chance to regain his old life as payment for a task considered to be impossible: \"inception\", the implantation of another person's idea into a target's subconscious.","runtime":"148","released":1279238400,"trailer":"http://youtube.com/watch?v=xitHF0IPJSQ","certification":"PG-13","torrents":{"en":{"1080p":{"provider":"YTS","filesize":"1.85 GB","size":1986422374,"peer":119,"seed":1245,"url":"magnet:?xt=urn:btih:224BF45881252643DFC2E71ABC7B2660A21C68C4&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337"},"720p":{"provider":"YTS","filesize":"1.07 GB","size":1148903752,"peer":57,"seed":728,"url":"magnet:?xt=urn:btih:CE9156EB497762F8B7577B71C0647A4B0C3423E1&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337"}}},"genres":["action","adventure","mystery","science-fiction","thriller"],"images":{"banner":"https://walter.trakt.us/images/movies/000/016/662/banners/original/9bd450d083.jpg","fanart":"https://walter.trakt.us/images/movies/000/016/662/fanarts/original/d02c86e1f7.jpg","poster":"https://walter.trakt.us/images/movies/000/016/662/posters/original/a7f71cbc67.jpg"},"rating":{"hated":100,"loved":100,"votes":25134,"watching":3,"percentage":88}}
+
+      + Schema
+
+            {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    },
+                    "imdb_id": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "year": {
+                        "type": "string"
+                    },
+                    "synopsis": {
+                        "type": "string"
+                    },
+                    "runtime": {
+                        "type": "string"
+                    },
+                    "released": {
+                        "type": "number"
+                    },
+                    "trailer": {
+                        "type": "string"
+                    },
+                    "certification": {
+                        "type": "string"
+                    },
+                    "torrents": {
+                        "type": "object"
+                    },
+                    "genres": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "minItems": 1
+                    },
+                    "images": {
+                        "type": "object",
+                        "properties": {
+                            "poster": {
+                                "type": "string"
+                            },
+                            "fanart": {
+                                "type": "string"
+                            },
+                            "banner": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "rating": {
+                        "type": "object",
+                        "properties": {
+                            "percentage": {
+                                "type": "number"
+                            },
+                            "watching": {
+                                "type": "number"
+                            },
+                            "votes": {
+                                "type": "number"
+                            },
+                            "loved": {
+                                "type": "number"
+                            },
+                            "hated": {
+                                "type": "number"
+                            }
+                        }
+                    }
+                }
+            }
 
 ## Get Random [/random/movie]
 
 ### Random [GET]
 Gives a random movie from the database.
-+ Response 200 (application/json)
-    + Body
-        {"_id":"tt0055277","imdb_id":"tt0055277","title":"The Parent Trap","year":"1961","synopsis":"Hayley Mills plays twins who, unknown to their divorced parents, meet at a summer camp. Products of single parent households, they switch places (surprise!) so as to meet the parent they never knew, and then contrive to reunite them.","runtime":"129","released":-270000000,"trailer":"http://youtube.com/watch?v=yu0t4bfp_Zo","certification":"G","torrents":{"en":{"1080p":{"provider":"YTS","filesize":"1.97 GB","size":2115271393,"peer":4,"seed":10,"url":"magnet:?xt=urn:btih:DF217803D679E92EB9FED02EF7A5EE522279A637&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337"},"720p":{"provider":"YTS","filesize":"957 MB","size":1003487232,"peer":1,"seed":9,"url":"magnet:?xt=urn:btih:21CFC98C4FF96B01BAC4139B89DBDECDDEB63F18&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337"}}},"genres":["comedy","family"],"images":{"banner":"images/posterholder.png","fanart":"https://walter.trakt.us/images/movies/000/011/823/fanarts/original/3b34c7e233.jpg","poster":"https://walter.trakt.us/images/movies/000/011/823/posters/original/99c8a53540.jpg"},"rating":{"hated":100,"loved":100,"votes":119,"watching":0,"percentage":72}}
-        
+  + Response 200 (application/json; charset=utf-8)
+
+      + Body
+
+            {"_id":"tt0055277","imdb_id":"tt0055277","title":"The Parent Trap","year":"1961","synopsis":"Hayley Mills plays twins who, unknown to their divorced parents, meet at a summer camp. Products of single parent households, they switch places (surprise!) so as to meet the parent they never knew, and then contrive to reunite them.","runtime":"129","released":-270000000,"trailer":"http://youtube.com/watch?v=yu0t4bfp_Zo","certification":"G","torrents":{"en":{"1080p":{"provider":"YTS","filesize":"1.97 GB","size":2115271393,"peer":4,"seed":10,"url":"magnet:?xt=urn:btih:DF217803D679E92EB9FED02EF7A5EE522279A637&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337"},"720p":{"provider":"YTS","filesize":"957 MB","size":1003487232,"peer":1,"seed":9,"url":"magnet:?xt=urn:btih:21CFC98C4FF96B01BAC4139B89DBDECDDEB63F18&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337"}}},"genres":["comedy","family"],"images":{"banner":"images/posterholder.png","fanart":"https://walter.trakt.us/images/movies/000/011/823/fanarts/original/3b34c7e233.jpg","poster":"https://walter.trakt.us/images/movies/000/011/823/posters/original/99c8a53540.jpg"},"rating":{"hated":100,"loved":100,"votes":119,"watching":0,"percentage":72}}
+
+      + Schema
+
+            {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                    "_id": {
+                        "type": "string"
+                    },
+                    "imdb_id": {
+                        "type": "string"
+                    },
+                    "title": {
+                        "type": "string"
+                    },
+                    "year": {
+                        "type": "string"
+                    },
+                    "synopsis": {
+                        "type": "string"
+                    },
+                    "runtime": {
+                        "type": "string"
+                    },
+                    "released": {
+                        "type": "number"
+                    },
+                    "trailer": {
+                        "type": "string"
+                    },
+                    "certification": {
+                        "type": "string"
+                    },
+                    "torrents": {
+                        "type": "object"
+                    },
+                    "genres": {
+                        "type": "array",
+                        "items": {
+                            "type": "string"
+                        },
+                        "minItems": 1
+                    },
+                    "images": {
+                        "type": "object",
+                        "properties": {
+                            "poster": {
+                                "type": "string"
+                            },
+                            "fanart": {
+                                "type": "string"
+                            },
+                            "banner": {
+                                "type": "string"
+                            }
+                        }
+                    },
+                    "rating": {
+                        "type": "object",
+                        "properties": {
+                            "percentage": {
+                                "type": "number"
+                            },
+                            "watching": {
+                                "type": "number"
+                            },
+                            "votes": {
+                                "type": "number"
+                            },
+                            "loved": {
+                                "type": "number"
+                            },
+                            "hated": {
+                                "type": "number"
+                            }
+                        }
+                    }
+                }
+            }
+
 # Group Show
 
 ## Get Pages [/shows]
 
 ### Pages [GET]
 Gives an array of the available pages for show content.
- + Response 200 (application/json)
+ + Response 200 (application/json; charset=utf-8)
+
     + Body
-        ["shows/1","shows/2","shows/3","shows/4","shows/5","shows/6","shows/7","shows/8","shows/9","shows/10","shows/11","shows/12","shows/13","shows/14","shows/15","shows/16","shows/17","shows/18","shows/19","shows/20","shows/21","shows/22","shows/23","shows/24","shows/25","shows/26","shows/27","shows/28","shows/29","shows/30"]
+
+            ["shows/1","shows/2","shows/3","shows/4","shows/5","shows/6","shows/7","shows/8","shows/9","shows/10","shows/11","shows/12","shows/13","shows/14","shows/15","shows/16","shows/17","shows/18","shows/19","shows/20","shows/21","shows/22","shows/23","shows/24","shows/25","shows/26","shows/27","shows/28","shows/29","shows/30"]
+
+    + Schema
+
+            {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "type": "array",
+                "items": {
+                    "type": "string"
+                },
+                "minItems": 1
+            }
 
 ## Get Page [/shows/{page}{?sort,order,genre,keywords}]
- + Parameters
-    + page (integer, `1`) - The page of the content you want.
-    + sort (string, `rating`) - Sort the list of content.
-        + Values
-            + `name`
-            + `rating`
-            + `trending`
-            + `updated`
-            + `year`
-    + order (integer, `-1`) - Order the list of content.
-        + Values
-            + `1`
-            + `-1`
-    + genre (string, `action`) - Filter on a genre.
-    + keywords (string, `game of thrones`) - Seach based on keywords.
 
 ### Page [GET]
 Gives an array of shows. The array has a has a maximum length of 50 shows per page.
- + Response 200 (application/json)
-    + Body
-        [{"_id":"tt0944947","imdb_id":"tt0944947","tvdb_id":"121361","title":"Game of Thrones","year":"2011","slug":"game-of-thrones","num_seasons":3,"images":{"banner":"https://walter.trakt.us/images/shows/000/001/390/banners/original/9fefff703d.jpg","fanart":"https://walter.trakt.us/images/shows/000/001/390/fanarts/original/76d5df8aed.jpg","poster":"https://walter.trakt.us/images/shows/000/001/390/posters/original/93df9cd612.jpg"},"rating":{"hated":100,"loved":100,"votes":49405,"watching":90,"percentage":94}},{"_id":"tt0903747","imdb_id":"tt0903747","tvdb_id":"81189","title":"Breaking Bad","year":"2008","slug":"breaking-bad","num_seasons":5,"images":{"banner":"https://walter.trakt.us/images/shows/000/001/388/banners/original/c53872a7e2.jpg","fanart":"https://walter.trakt.us/images/shows/000/001/388/fanarts/original/fdbc0cb02d.jpg","poster":"https://walter.trakt.us/images/shows/000/001/388/posters/original/fa39b59954.jpg"},"rating":{"hated":100,"loved":100,"votes":40669,"watching":21,"percentage":94}}]
+  + Parameters
+      + page (integer, `1`) - The page of the content you want.
+      + sort (string, `rating`) - Sort the list of content.
+          + Values
+              + `name`
+              + `rating`
+              + `trending`
+              + `updated`
+              + `year`
+      + order (integer, `-1`) - Order the list of content.
+          + Values
+              + `1`
+              + `-1`
+      + genre (string, `action`) - Filter on a genre.
+      + keywords (string, `game of thrones`) - Seach based on keywords.
+
+  + Response 200 (application/json; charset=utf-8)
+
+      + Body
+
+            [{"_id":"tt0944947","imdb_id":"tt0944947","tvdb_id":"121361","title":"Game of Thrones","year":"2011","slug":"game-of-thrones","num_seasons":3,"images":{"banner":"https://walter.trakt.us/images/shows/000/001/390/banners/original/9fefff703d.jpg","fanart":"https://walter.trakt.us/images/shows/000/001/390/fanarts/original/76d5df8aed.jpg","poster":"https://walter.trakt.us/images/shows/000/001/390/posters/original/93df9cd612.jpg"},"rating":{"hated":100,"loved":100,"votes":49405,"watching":90,"percentage":94}},{"_id":"tt0903747","imdb_id":"tt0903747","tvdb_id":"81189","title":"Breaking Bad","year":"2008","slug":"breaking-bad","num_seasons":5,"images":{"banner":"https://walter.trakt.us/images/shows/000/001/388/banners/original/c53872a7e2.jpg","fanart":"https://walter.trakt.us/images/shows/000/001/388/fanarts/original/fdbc0cb02d.jpg","poster":"https://walter.trakt.us/images/shows/000/001/388/posters/original/fa39b59954.jpg"},"rating":{"hated":100,"loved":100,"votes":40669,"watching":21,"percentage":94}}]
+
+      + Schema
+
+            {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "array",
+                "items": {
+                    "type": "object",
+                    "properties": {
+                        "_id": {
+                          "type": "string"
+                        },
+                        "imdb_id": {
+                          "type": "string"
+                        },
+                        "tvdb_id": {
+                          "type": "string"
+                        },
+                        "title": {
+                          "type": "string"
+                        },
+                        "year": {
+                          "type": "string"
+                        },
+                        "slug": {
+                          "type": "string"
+                        },
+                        "rating": {
+                            "type": "object",
+                            "properties": {
+                                "percentage": {
+                                    "type": "number"
+                                },
+                                "watching": {
+                                    "type": "number"
+                                },
+                                "votes": {
+                                    "type": "number"
+                                },
+                                "loved": {
+                                    "type": "number"
+                                },
+                                "hated": {
+                                    "type": "number"
+                                }
+                            }
+                        },
+                        "num_seasons": {
+                          "type": "number"
+                        },
+                        "images": {
+                            "type": "object",
+                            "properties": {
+                                "poster": {
+                                    "type": "string"
+                                },
+                                "fanart": {
+                                    "type": "string"
+                                },
+                                "banner": {
+                                    "type": "string"
+                                }
+                            }
+                        }
+                    }
+                }
+            }
 
 ## Get Details [/show/{imdb_id}]
- + Parameters
-    + id (string, `tt0944947`) - The imdb id of the show you want details on.
 
 ### Details [GET]
 Gives information about a single show based on the given imdb id.
- + Response 200 (application/json)
-    + Body
-        {"_id":"tt0944947","imdb_id":"tt0944947","tvdb_id":"121361","title":"Game of Thrones","year":"2011","slug":"game-of-thrones","synopsis":"Seven noble families fight for control of the mythical land of Westeros. Friction between the houses leads to full-scale war. All while a very ancient evil awakens in the farthest north. Amidst the war, a neglected military order of misfits, the Night's Watch, is all that stands between the realms of men and the icy horrors beyond.","runtime":"60","country":"us","network":"HBO","air_day":"Sunday","air_time":"21:00","status":"returning series","num_seasons":3,"last_updated":1470262719365,"__v":0,"episodes":[{"torrents":{"0":{"provider":"EZTV","peers":0,"seeds":0,"url":"magnet:?xt=urn:btih:4f5a87bd540ad352e88c101d6ba21ea11a498222&dn=Game.of.Thrones.S05E01.INTERNAL.HDTV.x264-BATV%5Brartv%5D&tr=http%3A%2F%2Ftracker.trackerfix.com%3A80%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710&tr=udp%3A%2F%2F9.rarbg.to%3A2710&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce"},"480p":{"provider":"EZTV","peers":0,"seeds":0,"url":"magnet:?xt=urn:btih:4f5a87bd540ad352e88c101d6ba21ea11a498222&dn=Game.of.Thrones.S05E01.INTERNAL.HDTV.x264-BATV%5Brartv%5D&tr=http%3A%2F%2Ftracker.trackerfix.com%3A80%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710&tr=udp%3A%2F%2F9.rarbg.to%3A2710&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce"},"720p":{"provider":"EZTV","peers":0,"seeds":0,"url":"magnet:?xt=urn:btih:f54dcd5373bea813604d9a2ff30f03821d5e3187&dn=Game.of.Thrones.S05E01.The.Wars.to.Come.720p.WEB-DL.DD5.1.H.264-NTb%5Brartv%5D&tr=http%3A%2F%2Ftracker.trackerfix.com%3A80%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710&tr=udp%3A%2F%2F9.rarbg.to%3A2710&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce"},"1080p":{"provider":"EZTV","peers":0,"seeds":0,"url":"magnet:?xt=urn:btih:602a93d3b6e461e90ed6994bdba5b69042e01e96&dn=Game.of.Thrones.S05E01.The.Wars.to.Come.1080p.WEB-DL.DD5.1.H.264-NTb%5Brartv%5D&tr=http%3A%2F%2Ftracker.trackerfix.com%3A80%2Fannounce&tr=udp%3A%2F%2F9.rarbg.me%3A2710&tr=udp%3A%2F%2F9.rarbg.to%3A2710&tr=udp%3A%2F%2Fopen.demonii.com%3A1337%2Fannounce"}},"watched":{"watched":false},"first_aired":1428886800,"date_based":false,"overview":"Cersei and Jaime adjust to a world without Tywin; Varys reveals a conspiracy to Tyrion; Daenerys faces a new threat to her rule; Jon is caught between two kings.","title":"The Wars to Come","episode":1,"season":5,"tvdb_id":5083694}],"genres":["drama","fantasy","science-fiction","action","adventure"],"images":{"banner":"https://walter.trakt.us/images/shows/000/001/390/banners/original/9fefff703d.jpg","fanart":"https://walter.trakt.us/images/shows/000/001/390/fanarts/original/76d5df8aed.jpg","poster":"https://walter.trakt.us/images/shows/000/001/390/posters/original/93df9cd612.jpg"},"rating":{"hated":100,"loved":100,"votes":49405,"watching":90,"percentage":94}}
+  + Parameters
+      + imdb_id (string, `tt0944947`) - The imdb id of the show you want details on.
+
+  + Response 200 (application/json; charset=utf-8)
+
+      + Body
+
+            {"_id":"tt0944947","imdb_id":"tt0944947","tvdb_id":"121361","title":"Game of Thrones","year":"2011","slug":"game-of-thrones","synopsis":"Seven noble families fight for control of the mythical land of Westeros. Friction between the houses leads to full-scale war. All while a very ancient evil awakens in the farthest north. Amidst the war, a neglected military order of misfits, the Night's Watch, is all that stands between the realms of men and the icy horrors beyond.","runtime":"60","country":"us","network":"HBO","air_day":"Sunday","air_time":"21:00","status":"returning series","num_seasons":5,"last_updated":1479652103434,"__v":0,"episodes":[{"torrents":{"0":{"provider":"ETTV KILLERS","peers":165,"seeds":151,"url":"magnet:?xt=urn:btih:8c5043df1a8fec9f7fddda70617c6bb96e14e6cc&dn=Game+of+Thrones+S04E01+HDTV+x264-KILLERS%5Bettv%5D&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fzer0day.to%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969%2Fannounce"},"480p":{"provider":"ETTV KILLERS","peers":165,"seeds":151,"url":"magnet:?xt=urn:btih:8c5043df1a8fec9f7fddda70617c6bb96e14e6cc&dn=Game+of+Thrones+S04E01+HDTV+x264-KILLERS%5Bettv%5D&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fzer0day.to%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969%2Fannounce"},"720p":{"provider":"720p","peers":34,"seeds":30,"url":"magnet:?xt=urn:btih:b380b6f10a60766f94d5db59e0e8584cc2bb531e&dn=Game.Of.Thrones.S04E01.1080p.HDTV.DD5.1.x264-PublicHD&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fzer0day.to%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969%2Fannounce"},"1080p":{"provider":"1080p","peers":34,"seeds":30,"url":"magnet:?xt=urn:btih:b380b6f10a60766f94d5db59e0e8584cc2bb531e&dn=Game.Of.Thrones.S04E01.1080p.HDTV.DD5.1.x264-PublicHD&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fzer0day.to%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969%2Fannounce"}},"watched":{"watched":false},"first_aired":1396832400,"date_based":false,"overview":"Tyrion welcomes a surprise guest to King’s Landing for the royal wedding, but fears he’s come to the Red Keep for something else. Meanwhile, Jon warns his skeptical Night’s Watch superiors about an impending attack. Jaime struggles to regain his status at home. Arya encounters a face from her past, and Daario Naharis discusses strategy with Daenerys on the journey to the slave city Meereen.","title":"Two Swords","episode":1,"season":4,"tvdb_id":4721938}],"genres":["drama","fantasy","science-fiction","action","adventure"],"images":{"poster":"http://image.tmdb.org/t/p/w500/hDd5Zd9VMOqBeHa2agbnHZ98WWr.jpg","fanart":"http://image.tmdb.org/t/p/w500/mUkuc2wyV9dHLG0D0Loaw5pO2s8.jpg","banner":"http://image.tmdb.org/t/p/w500/hDd5Zd9VMOqBeHa2agbnHZ98WWr.jpg"},"rating":{"percentage":94,"watching":35,"votes":51947,"loved":100,"hated":100}}
+
+      + Schema
+
+            {
+              "$schema": "http://json-schema.org/draft-04/schema#",
+              "type": "object",
+              "properties": {
+                  "_id": {
+                    "type": "string"
+                  },
+                  "imdb_id": {
+                    "type": "string"
+                  },
+                  "tvdb_id": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "year": {
+                    "type": "string"
+                  },
+                  "slug": {
+                    "type": "string"
+                  },
+                  "synopsis": {
+                    "type": "string"
+                  },
+                  "network": {
+                    "type": "string"
+                  },
+                  "air_day": {
+                    "type": "string"
+                  },
+                  "air_time": {
+                    "type": "string"
+                  },
+                  "status": {
+                    "type": "string"
+                  },
+                  "num_seasons": {
+                    "type": "number"
+                  },
+                  "__v": {
+                    "type": "number"
+                  },
+                  "episodes": {
+                      "type": "array"
+                  },
+                  "genres": {
+                      "type": "array",
+                      "items": {
+                          "type": "string"
+                      },
+                      "minItems": 1
+                  },
+                  "images": {
+                      "type": "object",
+                      "properties": {
+                          "poster": {
+                              "type": "string"
+                          },
+                          "fanart": {
+                              "type": "string"
+                          },
+                          "banner": {
+                              "type": "string"
+                          }
+                      }
+                  },
+                  "rating": {
+                      "type": "object",
+                      "properties": {
+                          "percentage": {
+                              "type": "number"
+                          },
+                          "watching": {
+                              "type": "number"
+                          },
+                          "votes": {
+                              "type": "number"
+                          },
+                          "loved": {
+                              "type": "number"
+                          },
+                          "hated": {
+                              "type": "number"
+                          }
+                      }
+                  }
+              }
+
+            }
+
 
 ## Get Random [/random/show]
 
 ### Random [GET]
 Gives a random show from the database.
-+ Response 200 (application/json)
++ Response 200 (application/json; charset=utf-8)
+
     + Body
-        {"_id":"tt1933836","imdb_id":"tt1933836","tvdb_id":"253525","title":"Level Up","year":"2011","slug":"level-up-2012","num_seasons":1,"images":{"banner":"images/posterholder.png","fanart":"https://walter.trakt.us/images/shows/000/040/127/fanarts/original/bcaf2d5596.jpg","poster":"https://walter.trakt.us/images/shows/000/040/127/posters/original/09d66a5312.jpg"},"rating":{"hated":100,"loved":100,"votes":9,"watching":0,"percentage":54}}
+
+            {"_id":"tt1933836","imdb_id":"tt1933836","tvdb_id":"253525","title":"Level Up","year":"2011","slug":"level-up-2012","num_seasons":1,"images":{"banner":"images/posterholder.png","fanart":"https://walter.trakt.us/images/shows/000/040/127/fanarts/original/bcaf2d5596.jpg","poster":"https://walter.trakt.us/images/shows/000/040/127/posters/original/09d66a5312.jpg"},"rating":{"hated":100,"loved":100,"votes":9,"watching":0,"percentage":54}}
+
+    + Schema
+
+            {
+                "$schema": "http://json-schema.org/draft-04/schema#",
+                "type": "object",
+                "properties": {
+                    "_id": {
+                      "type": "string"
+                    },
+                    "imdb_id": {
+                      "type": "string"
+                    },
+                    "tvdb_id": {
+                      "type": "string"
+                    },
+                    "title": {
+                      "type": "string"
+                    },
+                    "year": {
+                      "type": "string"
+                    },
+                    "slug": {
+                      "type": "string"
+                    },
+                    "rating": {
+                        "type": "object",
+                        "properties": {
+                            "percentage": {
+                                "type": "number"
+                            },
+                            "watching": {
+                                "type": "number"
+                            },
+                            "votes": {
+                                "type": "number"
+                            },
+                            "loved": {
+                                "type": "number"
+                            },
+                            "hated": {
+                                "type": "number"
+                            }
+                        }
+                    },
+                    "num_seasons": {
+                      "type": "number"
+                    },
+                    "images": {
+                        "type": "object",
+                        "properties": {
+                            "poster": {
+                                "type": "string"
+                            },
+                            "fanart": {
+                                "type": "string"
+                            },
+                            "banner": {
+                                "type": "string"
+                            }
+                        }
+                    }
+                }
+            }
+
 
 # Group Genres
 

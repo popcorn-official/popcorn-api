@@ -1,7 +1,12 @@
+sudo: required
+
+dist: trusty
+
 language: node_js
 
 node_js:
-  - "6"
+  - '6'
+  - '7'
 
 addons:
   apt:
@@ -11,18 +16,19 @@ addons:
     packages:
       - mongodb-org-server
       - mongodb-org-shell
+      - mongodb-org-tools
+
+services:
+  - mongodb
+
+env:
+  - NODE_ENV=test
 
 git:
   submodules: false
 
 before_script:
-  - npm i -g gulp
+  - mongo --version
+  - npm install -g eslint gulp dredd@stable babel-cli
   - npm run lint
   - gulp build
-  - npm run server-dev &
-
-script:
-  - npm test
-
-after_script:
-  - npm run coverage

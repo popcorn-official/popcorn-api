@@ -1,0 +1,69 @@
+{
+    "_id": "tt0944947",
+    "imdb_id": "tt0944947",
+    "tvdb_id": "121361",
+    "title": "Game of Thrones",
+    "year": "2011",
+    "slug": "game-of-thrones",
+    "synopsis": "Seven noble families fight for control of the mythical land of Westeros. Friction between the houses leads to full-scale war. All while a very ancient evil awakens in the farthest north. Amidst the war, a neglected military order of misfits, the Night's Watch, is all that stands between the realms of men and the icy horrors beyond.",
+    "runtime": "60",
+    "country": "us",
+    "network": "HBO",
+    "air_day": "Sunday",
+    "air_time": "21:00",
+    "status": "returning series",
+    "num_seasons": 5,
+    "last_updated": 1479652103434,
+    "__v": 0,
+    "episodes": [{
+        "torrents": {
+            "0": {
+                "provider": "ETTV KILLERS",
+                "peers": 165,
+                "seeds": 151,
+                "url": "magnet:?xt=urn:btih:8c5043df1a8fec9f7fddda70617c6bb96e14e6cc&dn=Game+of+Thrones+S04E01+HDTV+x264-KILLERS%5Bettv%5D&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fzer0day.to%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969%2Fannounce"
+            },
+            "480p": {
+                "provider": "ETTV KILLERS",
+                "peers": 165,
+                "seeds": 151,
+                "url": "magnet:?xt=urn:btih:8c5043df1a8fec9f7fddda70617c6bb96e14e6cc&dn=Game+of+Thrones+S04E01+HDTV+x264-KILLERS%5Bettv%5D&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fzer0day.to%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969%2Fannounce"
+            },
+            "720p": {
+                "provider": "720p",
+                "peers": 34,
+                "seeds": 30,
+                "url": "magnet:?xt=urn:btih:b380b6f10a60766f94d5db59e0e8584cc2bb531e&dn=Game.Of.Thrones.S04E01.1080p.HDTV.DD5.1.x264-PublicHD&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fzer0day.to%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969%2Fannounce"
+            },
+            "1080p": {
+                "provider": "1080p",
+                "peers": 34,
+                "seeds": 30,
+                "url": "magnet:?xt=urn:btih:b380b6f10a60766f94d5db59e0e8584cc2bb531e&dn=Game.Of.Thrones.S04E01.1080p.HDTV.DD5.1.x264-PublicHD&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Fglotorrents.pw%3A6969%2Fannounce&tr=udp%3A%2F%2Ftracker.openbittorrent.com%3A80%2Fannounce&tr=udp%3A%2F%2Ftracker.opentrackr.org%3A1337%2Fannounce&tr=udp%3A%2F%2Fzer0day.to%3A1337%2Fannounce&tr=udp%3A%2F%2Ftracker.coppersurfer.tk%3A6969%2Fannounce"
+            }
+        },
+        "watched": {
+            "watched": false
+        },
+        "first_aired": 1396832400,
+        "date_based": false,
+        "overview": "Tyrion welcomes a surprise guest to King’s Landing for the royal wedding, but fears he’s come to the Red Keep for something else. Meanwhile, Jon warns his skeptical Night’s Watch superiors about an impending attack. Jaime struggles to regain his status at home. Arya encounters a face from her past, and Daario Naharis discusses strategy with Daenerys on the journey to the slave city Meereen.",
+        "title": "Two Swords",
+        "episode": 1,
+        "season": 4,
+        "tvdb_id": 4721938
+    }],
+    "genres": ["drama", "fantasy", "science-fiction", "action", "adventure"],
+    "images": {
+        "poster": "http://image.tmdb.org/t/p/w500/hDd5Zd9VMOqBeHa2agbnHZ98WWr.jpg",
+        "fanart": "http://image.tmdb.org/t/p/w500/mUkuc2wyV9dHLG0D0Loaw5pO2s8.jpg",
+        "banner": "http://image.tmdb.org/t/p/w500/hDd5Zd9VMOqBeHa2agbnHZ98WWr.jpg"
+    },
+    "rating": {
+        "percentage": 94,
+        "watching": 35,
+        "votes": 51947,
+        "loved": 100,
+        "hated": 100
+    }
+}

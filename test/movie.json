@@ -1,0 +1,44 @@
+{
+    "_id": "tt1375666",
+    "imdb_id": "tt1375666",
+    "title": "Inception",
+    "year": "2010",
+    "synopsis": "Cobb, a skilled thief who commits corporate espionage by infiltrating the subconscious of his targets is offered a chance to regain his old life as payment for a task considered to be impossible: \"inception\", the implantation of another person's idea into a target's subconscious.",
+    "runtime": "148",
+    "released": 1279238400,
+    "trailer": "http://youtube.com/watch?v=xitHF0IPJSQ",
+    "certification": "PG-13",
+    "torrents": {
+        "en": {
+            "1080p": {
+                "provider": "YTS",
+                "filesize": "1.85 GB",
+                "size": 1986422374,
+                "peer": 119,
+                "seed": 1245,
+                "url": "magnet:?xt=urn:btih:224BF45881252643DFC2E71ABC7B2660A21C68C4&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337"
+            },
+            "720p": {
+                "provider": "YTS",
+                "filesize": "1.07 GB",
+                "size": 1148903752,
+                "peer": 57,
+                "seed": 728,
+                "url": "magnet:?xt=urn:btih:CE9156EB497762F8B7577B71C0647A4B0C3423E1&tr=udp://glotorrents.pw:6969/announce&tr=udp://tracker.opentrackr.org:1337/announce&tr=udp://torrent.gresille.org:80/announce&tr=udp://tracker.openbittorrent.com:80&tr=udp://tracker.coppersurfer.tk:6969&tr=udp://tracker.leechers-paradise.org:6969&tr=udp://p4p.arenabg.ch:1337&tr=udp://tracker.internetwarriors.net:1337"
+            }
+        }
+    },
+    "genres": ["action", "adventure", "mystery", "science-fiction", "thriller"],
+    "images": {
+        "banner": "https://walter.trakt.us/images/movies/000/016/662/banners/original/9bd450d083.jpg",
+        "fanart": "https://walter.trakt.us/images/movies/000/016/662/fanarts/original/d02c86e1f7.jpg",
+        "poster": "https://walter.trakt.us/images/movies/000/016/662/posters/original/a7f71cbc67.jpg"
+    },
+    "rating": {
+        "hated": 100,
+        "loved": 100,
+        "votes": 25134,
+        "watching": 3,
+        "percentage": 88
+    }
+}

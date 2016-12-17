@@ -1,10 +1,9 @@
 # Overview
 
-[![Build Status](https://travis-ci.org/popcorn-official/popcorn-api.svg?branch=master)](https://travis-ci.org/popcorn-official/popcorn-api)
+[![Build Status](https://travis-ci.org/popcorn-official/popcorn-api.svg?branch=development)](https://travis-ci.org/popcorn-official/popcorn-api)
 [![Dependency Status](https://david-dm.org/popcorn-official/popcorn-api.svg)](https://david-dm.org/popcorn-official/popcorn-api)
 [![devDependency Status](https://david-dm.org/popcorn-official/popcorn-api/dev-status.svg)](https://david-dm.org/popcorn-official/popcorn-api#info=devDependencies)
 [![document](https://popcorn-official.github.io/popcorn-api/badge.svg)](https://popcorn-official.github.io/popcorn-api/source.html)
-[![Coverage Status](https://coveralls.io/repos/github/popcorn-official/popcorn-api/badge.svg)](https://coveralls.io/r/popcorn-official/popcorn-api)
 
 Popcorn API is developed to make it easier for anyone to create their own version of [Popcorn Time](http://popcorntime.sh). It contains:
 
