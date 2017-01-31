@@ -51,15 +51,15 @@
   },
   "license": "MIT",
   "scripts": {
-    "test": "./node_modules/.bin/babel-node ./node_modules/.bin/dredd",
-    "prepublish": "./node_modules/.bin/gulp build",
+    "test": "babel-node dredd",
+    "prepublish": "gulp build",
     "start": "node ./build/popcorn-api.js --run",
-    "start-dev": "./node_modules/.bin/babel-node ./src/popcorn-api.js --run",
+    "start-dev": "babel-node ./src/popcorn-api.js --run",
     "server": "node ./build/popcorn-api.js --server",
-    "server-dev": "./node_modules/.bin/babel-node ./src/popcorn-api.js --server",
-    "forever": "./node_modules/.bin/forever start ./build/popcorn-api.js --run",
-    "docs": "./node_modules/.bin/esdoc -c .esdoc.json",
-    "lint": "./node_modules/.bin/eslint src/**/*.js"
+    "server-dev": "babel-node ./src/popcorn-api.js --server",
+    "forever": "forever start ./build/popcorn-api.js --run",
+    "docs": "esdoc -c .esdoc.json",
+    "lint": "eslint src/**/*.js"
   },
   "bin": {
     "popcorn-api": "./build/popcorn-api.js"
