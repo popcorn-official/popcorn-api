@@ -51,7 +51,7 @@
   },
   "license": "MIT",
   "scripts": {
-    "test": "babel-node dredd",
+    "test": "babel-node ./node_modules/.bin/dredd",
     "prepublish": "gulp build",
     "start": "node ./build/popcorn-api.js --run",
     "start-dev": "babel-node ./src/popcorn-api.js --run",
