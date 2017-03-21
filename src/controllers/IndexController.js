@@ -61,13 +61,9 @@ export default class IndexController {
       const { status } = JSON.parse(fs.readFileSync(statusPath, 'utf8'));
       const { updated } = JSON.parse(fs.readFileSync(updatedPath, 'utf8'));
       const commit = await executeCommand('git rev-parse --short HEAD');
-      const totalAnimes = await Anime.count({
-        $or: AnimeController.query.$or
-      }).exec();
+      const totalAnimes = await Anime.count(AnimeController.query).exec();
       const totalMovies = await Movie.count().exec();
-      const totalShows = await Show.count({
-        num_seasons: ShowController.query
-      }).exec();
+      const totalShows = await Show.count(ShowController.query).exec();
 
       return res.json({
         repo: repository.url,
