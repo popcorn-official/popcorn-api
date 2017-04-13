@@ -9,11 +9,11 @@ import torrentHealth from 'torrent-tracker-health';
 
 import Index from './Index';
 import packageJSON from '../package.json';
-import { connectMongoDB } from './config/setup';
+import { connectMongoDB } from './config/Setup';
 import {
   exportCollection,
   importCollection
-} from './utils';
+} from './Util';
 
 /** Class The class for the command line interface. */
 export default class CLI {
