@@ -307,6 +307,7 @@ export default class Helper {
           _id: traktShow.ids["imdb"],
           imdb_id: traktShow.ids["imdb"],
           tvdb_id: traktShow.ids["tvdb"],
+          tmdb_id: traktShow.ids["tmdb"],
           title: traktShow.title,
           year: traktShow.year,
           slug: traktShow.ids["slug"],
