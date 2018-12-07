@@ -119,7 +119,19 @@ const tmdb = new Tmdb({
  * @see https://github.com/vankasteelj/trakt.tv
  */
 const trakt = new Trakt({
-  client_id: process.env.TRAKT_KEY
+  client_id: process.env.TRAKT_KEY,
+  plugins: {
+    images: require('trakt.tv-images')
+},
+options: {
+                images: {
+                    smallerImages: true,
+                    fanartApiKey: process.env.FANART_KEY,
+                    tvdbApiKey: process.env.TVDB_KEY,
+                    tmdbApiKey: process.env.TMDB_KEY
+                }
+
+}
 })
 
 /**

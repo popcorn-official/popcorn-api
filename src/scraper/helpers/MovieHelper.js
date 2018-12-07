@@ -127,29 +127,29 @@ export default class MovieHelper extends AbstractHelper {
    * from.
    * @returns {Object} - Object with banner, fanart and poster images.
    */
-  _getTmdbImages(tmdbId: string): Promise<Object | Error> {
-    return tmdb.movie.images({
-      movie_id: tmdbId
-    }).then(i => {
-      const baseUrl = 'http://image.tmdb.org/t/p/w500'
+   _getTmdbImages(tmdbId: number): Object {
+     return tmdb.tv.images({
+       tv_id: tmdbId
+     }).then(i => {
+       const baseUrl = 'http://image.tmdb.org/t/p/w500'
 
-      const tmdbPoster = i.posters.filter(
-        poster => poster.iso_639_1 === 'en' || poster.iso_639_1 === null
-      )[0].file_path
-      const tmdbBackdrop = i.backdrops.filter(
-        backdrop => backdrop.iso_639_1 === 'en' || backdrop.iso_639_1 === null
-      )[0].file_path
+       const tmdbPoster = i.posters.filter(
+         poster => poster.iso_639_1 === 'en' || poster.iso_639_1 === null
+       )[0].file_path
+       const tmdbBackdrop = i.backdrops.filter(
+         backdrop => backdrop.iso_639_1 === 'en' || backdrop.iso_639_1 === null
+       )[0].file_path
 
-      const { Holder } = AbstractHelper
-      const images = {
-        banner: tmdbPoster ? `${baseUrl}${tmdbPoster}` : Holder,
-        fanart: tmdbBackdrop ? `${baseUrl}${tmdbBackdrop}` : Holder,
-        poster: tmdbPoster ? `${baseUrl}${tmdbPoster}` : Holder
-      }
+       const { Holder } = AbstractHelper
+       const images = {
+         banner: tmdbPoster ? `${baseUrl}${tmdbPoster}` : Holder,
+         fanart: tmdbBackdrop ? `${baseUrl}${tmdbBackdrop}` : Holder,
+         poster: tmdbPoster ? `${baseUrl}${tmdbPoster}` : Holder
+       }
 
-      return this.checkImages(images)
-    })
-  }
+       return this.checkImages(images)
+     })
+   }
 
   /**
    * Get movie images from OMDB.
@@ -206,12 +206,10 @@ export default class MovieHelper extends AbstractHelper {
    * from.
    * @returns {Promise<Object>} - Object with banner, fanart and poster images.
    */
-  getImages({tmdbId, imdbId}: Object): Promise<Object> {
-    return this._getTmdbImages(imdbId)
-      .catch(() => this._getOmdbImages(tmdbId))
-      .catch(() => this._getFanartImages(tmdbId))
-      .catch(() => AbstractHelper.DefaultImages)
-  }
+   getImages({imdbId, tmdbId}: Object): Promise<Object> {
+     return this._getTmdbImages(tmdbId)
+       .catch(() => AbstractHelper.DefaultImages)
+   }
 
   /**
    * Get info from Trakt and make a new movie object.
@@ -231,10 +229,11 @@ export default class MovieHelper extends AbstractHelper {
 
       if (traktMovie && traktMovie.ids.imdb && traktMovie.ids.tmdb) {
         const { imdb, slug, tmdb } = traktMovie.ids
-        const images = this.getImages({
-          imdbId: imdb,
-          tmdbId: tmdb
+        const img = await trakt.images.get({
+          tmdb: traktMovie.ids.imdb
+          imdb: traktMovie.ids.imdb
         })
+        console.log(img);
 
         return {
           imdb_id: imdb,
@@ -248,7 +247,11 @@ export default class MovieHelper extends AbstractHelper {
             watching: traktWatchers ? traktWatchers.length : 0,
             percentage: Math.round(traktMovie.rating * 10)
           },
-          images,
+          images: {
+            banner: img.fanart,
+            fanart: img.background,
+            poster: img.poster
+          },
           genres: traktMovie.genres ? traktMovie.genres : ['unknown'],
           language: traktMovie.language,
           released: new Date(traktMovie.released).getTime() / 1000.0,
