@@ -283,7 +283,7 @@ export default class ShowHelper extends AbstractHelper {
     return tmdb.tv.images({
       tv_id: tmdbId
     }).then(i => {
-      const baseUrl = 'http://image.tmdb.org/t/p/w500'
+      const baseUrl = 'https://image.tmdb.org/t/p/w500'
 
       const tmdbPoster = i.posters.filter(
         poster => poster.iso_639_1 === 'en' || poster.iso_639_1 === null
@@ -311,7 +311,7 @@ export default class ShowHelper extends AbstractHelper {
    */
   _getTvdbImages(tvdbId: number): Object {
     return tvdb.getSeriesById(tvdbId).then(i => {
-      const baseUrl = 'http://thetvdb.com/banners/'
+      const baseUrl = 'https://thetvdb.com/banners/'
 
       const { Holder } = AbstractHelper
       const images = {

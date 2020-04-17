@@ -131,7 +131,7 @@ export default class MovieHelper extends AbstractHelper {
     return tmdb.movie.images({
       movie_id: tmdbId
     }).then(i => {
-      const baseUrl = 'http://image.tmdb.org/t/p/w500'
+      const baseUrl = 'https://image.tmdb.org/t/p/w500'
 
       const tmdbPoster = i.posters.filter(
         poster => poster.iso_639_1 === 'en' || poster.iso_639_1 === null
