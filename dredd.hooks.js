@@ -1,4 +1,4 @@
-// Import the neccesary modules.
+// Import the necessary modules.
 // @flow
 import 'dotenv/config'
 // @flow-ignore

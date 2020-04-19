@@ -228,7 +228,7 @@ The following `query` properties can be used:
  - offset              # The page to search on
 ```
 
-Only anime will be scraped on [nyaa.se](https://nyaa.se/), this is because [nyaa.se](https://nyaa.se/) is focuses on East Asian content. The [`Nyaa`]() class will automaticly add the `category` and `sub_category` properties. The `offset` does not to be indicated since the algorithm for scraping [nyaa.se](https://nya.se/) will go through all the available pages (max of 100 pages/10.500 torrent due to site limitations).
+Only anime will be scraped on [nyaa.se](https://nyaa.se/), this is because [nyaa.se](https://nyaa.se/) is focuses on East Asian content. The [`Nyaa`]() class will automatically add the `category` and `sub_category` properties. The `offset` does not to be indicated since the algorithm for scraping [nyaa.se](https://nya.se/) will go through all the available pages (max of 100 pages/10.500 torrent due to site limitations).
 
 **An example of a provider:**
 ```javascript
