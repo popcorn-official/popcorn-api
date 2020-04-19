@@ -47,7 +47,7 @@ export default class Cli extends BaseCli {
   name: string
 
   /**
-   * The verion of the Cli program.
+   * The version of the Cli program.
    * @type {string}
    */
   version: string

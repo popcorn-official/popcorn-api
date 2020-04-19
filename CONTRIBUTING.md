@@ -136,7 +136,7 @@ development of the project.
 ```
  $ npm run build    # Transform the code with 'babel'
  $ npm run docs     # Generate the documentation with 'esdoc'
- $ npm run debug    # Run the applicaiton in debug mode
+ $ npm run debug    # Run the application in debug mode
  $ npm run dev      # Run the application in development mode
  $ npm run flow     # Check flow typings
  $ npm run lint     # Check javascript style
